@@ -43,3 +43,6 @@ TODO:
 2)Simplify code -> so fargot rid of susan_corners, susan_corners_quick, susan_principle, susan_principle_small,susan_smoothing,
   susan_edges_small ... need to clean up a bit further
 3)Put each function in a separate header/source file
+
+
+***I uploaded the flowchart for part 1a of the lab, you can view it by clicking the "Issues" tab
