@@ -36,13 +36,22 @@ Code changes:
 	-> This needs to be done to ensure output and golden are the same, I think because getint() increments the file pointer
 2)Remove dynamic memory allocation:
  -all malloc calls converted to using arrays instead
+3)Removed all unused functions
+4)Moved all functions into separate header/source files
+5)Any variables that did not need to be passed into functions (only used within the function) were hard coded into the function itself.  
+E.G. threshold, variables other than bp in setup_brightness
+6) Removed all argument parsing from main since only -e will be used.
 
 
 TODO:
+Part A)
 1)Remove all unnecessary communication/dependencies (?)
-2)Simplify code -> so fargot rid of susan_corners, susan_corners_quick, susan_principle, susan_principle_small,susan_smoothing,
-  susan_edges_small ... need to clean up a bit further
-3)Put each function in a separate header/source file
+2)Simplify code -> maybe need to do a little more?
+3)Remove "sys/file" header? It says to do this in susan.c, not sure how to go about it though...
+4*)Make sure arguments passed between functions are not of type pointer *** -> explicitly pass arrays and convert pointers into arrays into array indices
+Part B)
+1)convert .h/.c -> .sc/.sir .  Combine setup_brightness_lut and susan_edges into detect edges
+...
 
 
 ***I uploaded the flowchart for part 1a of the lab, you can view it by clicking the "Issues" tab
