@@ -374,7 +374,7 @@ get_image(argv[1],&in,x_size,y_size);
 
 //r   = (int *) malloc(x_size * y_size * sizeof(int));
 r   = (int *) r_array; //added by AJG
-setup_brightness_lut(&bp);
+setup_brightness_lut(bp);
 
 //mid = (uchar *)malloc(x_size*y_size);
 mid = (uchar *) mid_array; //AJG

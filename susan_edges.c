@@ -1,7 +1,8 @@
 #include "susan_edges.h"
 
 void susan_edges(in,r,mid,bp,x_size,y_size)
-  unsigned char *in, *bp, *mid;
+  unsigned char *in, *mid;
+  unsigned char bp[516];
   int   *r, x_size, y_size;
 {
 float z;
@@ -16,7 +17,7 @@ int max_no = 2650;
     {
       n=100;
       p=in + (i-3)*x_size + j - 1;
-      cp=bp + in[i*x_size+j];
+      cp=bp + 258 + in[i*x_size+j];
 
       n+=*(cp-*p++);
       n+=*(cp-*p++);
@@ -79,7 +80,7 @@ int max_no = 2650;
       {
         m=r[i*x_size+j];
         n=max_no - m;
-        cp=bp + in[i*x_size+j];
+        cp=bp + 258 + in[i*x_size+j];
 
         if (n>600)
         {
