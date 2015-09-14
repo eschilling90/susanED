@@ -354,7 +354,8 @@ main(argc, argv)
 /* {{{ vars */
 
 char   filename [80];
-uchar  *in, *bp, *mid;
+uchar  *in, *mid;
+uchar  bp[516];
 int    *r,
        x_size=76, y_size=95;
 //this is new (AJG)
