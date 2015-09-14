@@ -36,7 +36,7 @@ int getint(fd)
 
 void get_image(filename,in,x_size,y_size)
   char           filename[200];
-  unsigned char  **in;
+  unsigned char  in[X_SIZE*Y_SIZE];
   int            x_size, y_size;
 {
 FILE  *fd;
