@@ -1,7 +1,7 @@
 #include "edge_draw.h"
 
 void edge_draw(in,mid,x_size,y_size)
-  unsigned char *in;
+  unsigned char in[X_SIZE*Y_SIZE];
   unsigned char mid[76*95];
   int x_size, y_size;
 {
