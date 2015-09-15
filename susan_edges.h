@@ -3,5 +3,5 @@
 #include <stdio.h>
 #include <math.h>
 #include <string.h>
-void susan_edges(unsigned char *in,int *r,unsigned char *mid,unsigned char bp[516],int x_size,int y_size);
+void susan_edges(unsigned char *in,int *r,unsigned char mid[76*95],unsigned char bp[516],int x_size,int y_size);
 #endif

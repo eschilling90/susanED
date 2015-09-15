@@ -1,8 +1,11 @@
 #include "susan_thin.h"
 
 void susan_thin(r,mid,x_size,y_size)
-  unsigned char *mid;
+//void susan_thin(mid,x_size,y_size,r)
+  unsigned char mid[76*95];
   int   *r, x_size, y_size;
+  //int   x_size, y_size;
+  //int    r[x_size][y_size][sizeof(int)];
 {
 int   l[9], centre, nlinks, npieces,
       b01, b12, b21, b10,

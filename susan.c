@@ -354,10 +354,12 @@ main(argc, argv)
 /* {{{ vars */
 
 char   filename [80];
-uchar  *in, *mid;
+uchar  *in; 
+//uchar  *mid;
+uchar  mid[76*95];
 uchar  bp[516];
-int    *r,
-       x_size=76, y_size=95;
+int    *r;
+int       x_size=76, y_size=95;
 //this is new (AJG)
 int    r_array[x_size][y_size][sizeof(int)];
 int    mid_array[x_size][y_size];
@@ -378,7 +380,7 @@ r   = (int *) r_array; //added by AJG
 setup_brightness_lut(bp);
 
 //mid = (uchar *)malloc(x_size*y_size);
-mid = (uchar *) mid_array; //AJG
+//mid = (uchar *) mid_array; //AJG
 memset (mid,100,x_size * y_size); /* note not set to zero */
 susan_edges(in,r,mid,bp,x_size,y_size);
 susan_thin(r,mid,x_size,y_size);
