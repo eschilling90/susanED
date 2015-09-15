@@ -313,6 +313,10 @@ typedef float      TOTAL_TYPE; /* for my PowerPC accelerator only */
 typedef  unsigned char uchar;
 typedef  struct {int x,y,info, dx, dy, I;} CORNER_LIST[MAX_CORNERS];
 
+/* X_SIZE and Y_SIZE */
+#define X_SIZE 76
+#define Y_SIZE 95
+
 /* }}} */
 /* {{{ usage() */
 
@@ -354,7 +358,7 @@ main(argc, argv)
 /* {{{ vars */
 
 char   filename [80];
-uchar  *in; 
+uchar  in[X_SIZE*Y_SIZE]; 
 //uchar  *mid;
 uchar  mid[76*95];
 uchar  bp[516];
@@ -371,7 +375,7 @@ int    mid_array[x_size][y_size];
 if (argc<3)
   usage();
 
-get_image(argv[1],&in,x_size,y_size);
+get_image(argv[1],in,x_size,y_size);
 
 /* {{{ main processing */
 
