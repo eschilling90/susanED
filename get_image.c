@@ -36,12 +36,11 @@ int getint(fd)
 void get_image(filename,in,x_size,y_size)
   char           filename[200];
   unsigned char  in[X_SIZE*Y_SIZE];
-  int            x_size, y_size;
 {
 FILE  *fd;
 char header [100];
 int  tmp1,tmp2,tmp3;
-int tmp_ary[x_size][y_size]; //Added by AJG
+/*int tmp_ary[x_size][y_size];*/ //Added by AJG. then commented by TT
 
 
 
@@ -69,10 +68,10 @@ int tmp_ary[x_size][y_size]; //Added by AJG
 /* }}} */
 
   //*in = (uchar *) malloc(x_size * y_size); //this was removed by AJG 
-  *in = (unsigned char *) tmp_ary; //Added by AJG
+  //*in = (unsigned char *) tmp_ary; //Added by AJG
 
 
-  if (fread(*in,1,x_size * y_size,fd) == 0)
+  if (fread(in,1,x_size * y_size,fd) == 0)
     printf("Image %s is the wrong size (exit_error used to be here)\n",filename);
     //exit_error("Image %s is wrong size.\n",filename);
 
