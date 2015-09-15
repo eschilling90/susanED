@@ -46,7 +46,7 @@ E.G. threshold, variables other than bp in setup_brightness
 TODO:
 Part A)
 1)Remove all unnecessary communication/dependencies (?)
-2)Simplify code -> maybe need to do a little more?
+2)Simplify code -> maybe need to do a little more? DONE
 3)Remove "sys/file" header? It says to do this in susan.c, not sure how to go about it though...
 4*)Make sure arguments passed between functions are not of type pointer *** -> explicitly pass arrays and convert pointers into arrays into array indices
 Part B)
@@ -55,3 +55,12 @@ Part B)
 
 
 ***I uploaded the flowchart for part 1a of the lab, you can view it by clicking the "Issues" tab
+
+As of 9/14
+TODO:
+1) Convert following variables:
+in - Tony
+mid - Alex <- DONE
+r  - Erik
+2) move x_size and y_size into header files and stop passing them into files
+3) start conversion to specc
