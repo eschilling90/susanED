@@ -2,7 +2,7 @@
 
 void put_image(filename,in,x_size,y_size)
   char filename [100];
-  char *in;
+  char in[X_SIZE*Y_SIZE];
   int  x_size,
        y_size;
 {
