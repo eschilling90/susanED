@@ -1,3 +1,16 @@
+Skip to content
+This repository  
+Pull requests
+Issues
+Gist
+ @groszewa
+ Unwatch 3
+  Star 0
+ Fork 0eschilling90/susanED
+Branch: master  susanED/get_image.c
+@doublskydoublsky 9 hours ago Update get_image.c
+2 contributors @groszewa @doublsky
+RawBlameHistory     82 lines (61 sloc)  1.86 KB
 
 
 #include "get_image.h"
@@ -36,7 +49,7 @@ int getint(fd)
 
 void get_image(filename,in,x_size,y_size)
   char           filename[200];
-  unsigned char  **in;
+  unsigned char  in[X_SIZE*Y_SIZE];
   int            x_size, y_size;
 {
 FILE  *fd;
@@ -79,3 +92,5 @@ int tmp_ary[x_size][y_size]; //Added by AJG
 
   fclose(fd);
 }
+Status API Training Shop Blog About Pricing
+© 2015 GitHub, Inc. Terms Privacy Security Contact Help
