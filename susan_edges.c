@@ -1,7 +1,7 @@
 #include "susan_edges.h"
 
 void susan_edges(in,r,mid,bp,x_size,y_size)
-  unsigned char *in;
+  unsigned char in[X_SIZE*Y_SIZE];
  // unsigned char *mid;
   unsigned char mid[76*95];
   unsigned char bp[516];
