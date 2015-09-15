@@ -1,17 +1,3 @@
-Skip to content
-This repository  
-Pull requests
-Issues
-Gist
- @groszewa
- Unwatch 3
-  Star 0
- Fork 0eschilling90/susanED
-Branch: master  susanED/get_image.c
-@doublskydoublsky 9 hours ago Update get_image.c
-2 contributors @groszewa @doublsky
-RawBlameHistory     82 lines (61 sloc)  1.86 KB
-
 
 #include "get_image.h"
 
