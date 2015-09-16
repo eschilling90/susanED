@@ -2,8 +2,8 @@
 #define MY_PUTIMAGE_H
 #include <stdio.h>
 
-#define X_SIEZ 76
-#define Y_SIEZ 95
+#define X_SIZE 76
+#define Y_SIZE 95
 
-void put_image(char filename[100],char in[X_SIEZ*Y_SIEZ],int x_size,int y_size);
+void put_image(char filename[100],char in[X_SIZE*Y_SIZE],int x_size,int y_size);
 #endif
