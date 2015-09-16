@@ -59,7 +59,7 @@ Part B)
 As of 9/14
 TODO:
 1) Convert following variables:
-in - Tony
+in - Tony <- DONE
 mid - Alex <- DONE
 r  - Erik
 2) move x_size and y_size into header files and stop passing them into files
