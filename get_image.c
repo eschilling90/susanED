@@ -77,5 +77,5 @@ int  tmp1,tmp2,tmp3;
 
   fclose(fd);
 }
-Status API Training Shop Blog About Pricing
-© 2015 GitHub, Inc. Terms Privacy Security Contact Help
+// Status API Training Shop Blog About Pricing
+// © 2015 GitHub, Inc. Terms Privacy Security Contact Help
