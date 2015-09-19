@@ -301,7 +301,7 @@ typedef float      TOTAL_TYPE; /* for my PowerPC accelerator only */
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <sys/file.h>    /* may want to remove this line */
+//#include <sys/file.h>    /* may want to remove this line */
 #include "get_image.h"
 #include "setup_brightness_lut.h"
 #include "susan_edges.h"
@@ -317,80 +317,25 @@ typedef  struct {int x,y,info, dx, dy, I;} CORNER_LIST[MAX_CORNERS];
 #define X_SIZE 76
 #define Y_SIZE 95
 
-/* }}} */
-/* {{{ usage() */
-
-usage()
-{
-  printf("Usage: susan <in.pgm> <out.pgm> [options]\n\n");
-
-  printf("-s : Smoothing mode (default)\n");
-  printf("-e : Edges mode\n");
-  printf("-c : Corners mode\n\n");
-
-  printf("See source code for more information about setting the thresholds\n");
-  printf("-t <thresh> : Brightness threshold, all modes (default=20)\n");
-  printf("-d <thresh> : Distance threshold, smoothing mode, (default=4) (use next option instead for flat 3x3 mask)\n");
-  printf("-3 : Use flat 3x3 mask, edges or smoothing mode\n");
-  printf("-n : No post-processing on the binary edge map (runs much faster); edges mode\n");
-  printf("-q : Use faster (and usually stabler) corner mode; edge-like corner suppression not carried out; corners mode\n");
-  printf("-b : Mark corners/edges with single black points instead of black with white border; corners or edges mode\n");
-  printf("-p : Output initial enhancement image only; corners or edges mode (default is edges mode)\n");
-
-  printf("\nSUSAN Version 2l (C) 1995-1997 Stephen Smith, DRA UK. steve@fmrib.ox.ac.uk\n");
-
-  exit(0);
-}
- 
-
-
-
- 
-    
-
-/* }}} */
-/* {{{ main(argc, argv) */
-
 main(argc, argv)
   int   argc;
   char  *argv [];
 {
-/* {{{ vars */
 
 char   filename [80];
 uchar  in[X_SIZE*Y_SIZE]; 
-//uchar  *mid;
-uchar  mid[76*95];
+uchar  mid[X_SIZE*Y_SIZE];
+int    r[X_SIZE*Y_SIZE];
 uchar  bp[516];
-int    *r;
-int       x_size=76, y_size=95;
-//this is new (AJG)
-int    r_array[x_size][y_size][sizeof(int)];
-int    mid_array[x_size][y_size];
 
-//CORNER_LIST corner_list;
+get_image(argv[1],in);
 
-/* }}} */
-
-if (argc<3)
-  usage();
-
-get_image(argv[1],in,x_size,y_size);
-
-/* {{{ main processing */
-
-//r   = (int *) malloc(x_size * y_size * sizeof(int));
-r   = (int *) r_array; //added by AJG
 setup_brightness_lut(bp);
 
-//mid = (uchar *)malloc(x_size*y_size);
-//mid = (uchar *) mid_array; //AJG
-memset (mid,100,x_size * y_size); /* note not set to zero */
-susan_edges(in,r,mid,bp,x_size,y_size);
-susan_thin(r,mid,x_size,y_size);
-edge_draw(in,mid,x_size,y_size);
+memset (mid,100,X_SIZE * Y_SIZE); /* note not set to zero */
+susan_edges(in,r,mid,bp);
+susan_thin(r,mid);
+edge_draw(in,mid);
 
-put_image(argv[2],in,x_size,y_size);
+put_image(argv[2],in);
 }
-
-/* }}} */

@@ -41,14 +41,14 @@ Code changes:
 5)Any variables that did not need to be passed into functions (only used within the function) were hard coded into the function itself.  
 E.G. threshold, variables other than bp in setup_brightness
 6) Removed all argument parsing from main since only -e will be used.
-
+7) Hardcoded the values for x and y sizes into each header file so the variables no longer need to be passed into each function.
 
 TODO:
 Part A)
 1)Remove all unnecessary communication/dependencies (?)
 2)Simplify code -> maybe need to do a little more? DONE
-3)Remove "sys/file" header? It says to do this in susan.c, not sure how to go about it though...
-4*)Make sure arguments passed between functions are not of type pointer *** -> explicitly pass arrays and convert pointers into arrays into array indices
+3)Remove "sys/file" header? It says to do this in susan.c, not sure how to go about it though... <- This was commented out and nothing broke.
+4*)Make sure arguments passed between functions are not of type pointer *** -> explicitly pass arrays and convert pointers into arrays into array indices <- DONE
 Part B)
 1)convert .h/.c -> .sc/.sir .  Combine setup_brightness_lut and susan_edges into detect edges
 ...
@@ -56,11 +56,11 @@ Part B)
 
 ***I uploaded the flowchart for part 1a of the lab, you can view it by clicking the "Issues" tab
 
-As of 9/14
+As of 9/19
 TODO:
 1) Convert following variables:
 in - Tony <- DONE
 mid - Alex <- DONE
-r  - Erik
-2) move x_size and y_size into header files and stop passing them into files
+r  - Erik <- DONE
+2) move x_size and y_size into header files and stop passing them into files <- DONE
 3) start conversion to specc

@@ -15,7 +15,7 @@ int getint(fd)
       fgets(dummy,9000,fd);
     if (c==EOF)
       //exit_error("Image %s not binary PGM.\n","is");
-	printf("Image is not in binary PGM (exit_error used to be here)\n");
+  printf("Image is not in binary PGM (exit_error used to be here)\n");
     if (c>='0' && c<='9')
       break;   /* found what we were looking for */
     c = getc(fd);
@@ -33,14 +33,14 @@ int getint(fd)
   return (i);
 }
 
-void get_image(filename,in,x_size,y_size)
+void get_image(filename,in)
   char           filename[200];
   unsigned char  in[X_SIZE*Y_SIZE];
 {
 FILE  *fd;
 char header [100];
 int  tmp1,tmp2,tmp3;
-/*int tmp_ary[x_size][y_size];*/ //Added by AJG. then commented by TT
+/*int tmp_ary[X_SIZE][Y_SIZE];*/ //Added by AJG. then commented by TT
 
 
 
@@ -51,7 +51,7 @@ int  tmp1,tmp2,tmp3;
 #endif
     //exit_error("Can't input image %s.\n",filename);
     printf("Can't input image %s.\n (exit_error used to be here)\n",filename);
-	
+  
 
   /* {{{ read header */
 
@@ -61,17 +61,17 @@ int  tmp1,tmp2,tmp3;
     printf("Image %s does not have binary PGM header (exit_error used to be here)\n",filename);
     //exit_error("Image %s does not have binary PGM header.\n",filename);
 
-  tmp1 = getint(fd); //x_size
-  tmp2 = getint(fd); //y_size
+  tmp1 = getint(fd); //X_SIZE
+  tmp2 = getint(fd); //Y_SIZE
   tmp3 = getint(fd); //maxval
 
 /* }}} */
 
-  //*in = (uchar *) malloc(x_size * y_size); //this was removed by AJG 
+  //*in = (uchar *) malloc(X_SIZE * Y_SIZE); //this was removed by AJG 
   //*in = (unsigned char *) tmp_ary; //Added by AJG
 
 
-  if (fread(in,1,x_size * y_size,fd) == 0)
+  if (fread(in,1,X_SIZE * Y_SIZE,fd) == 0)
     printf("Image %s is the wrong size (exit_error used to be here)\n",filename);
     //exit_error("Image %s is wrong size.\n",filename);
 
