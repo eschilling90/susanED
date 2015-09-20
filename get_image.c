@@ -2,44 +2,12 @@
 #include "get_image.h"
 
 
-int getint(fd)
-  FILE *fd;
-{
-  int c, i;
-  char dummy[10000];
-
-  c = getc(fd);
-  while (1) /* find next integer */
-  {
-    if (c=='#')    /* if we're at a comment, read to end of line */
-      fgets(dummy,9000,fd);
-    if (c==EOF)
-      //exit_error("Image %s not binary PGM.\n","is");
-  printf("Image is not in binary PGM (exit_error used to be here)\n");
-    if (c>='0' && c<='9')
-      break;   /* found what we were looking for */
-    c = getc(fd);
-  }
-
-  /* we're at the start of a number, continue until we hit a non-number */
-  i = 0;
-  while (1) {
-    i = (i*10) + (c - '0');
-    c = getc(fd);
-    if (c==EOF) return (i);
-    if (c<'0' || c>'9') break;
-  }
-
-  return (i);
-}
-
 void get_image(filename,in)
   char           filename[200];
   unsigned char  in[X_SIZE*Y_SIZE];
 {
 FILE  *fd;
-char header [100];
-int  tmp1,tmp2,tmp3;
+char header [100],dummy[1000];
 /*int tmp_ary[X_SIZE][Y_SIZE];*/ //Added by AJG. then commented by TT
 
 
@@ -61,9 +29,10 @@ int  tmp1,tmp2,tmp3;
     printf("Image %s does not have binary PGM header (exit_error used to be here)\n",filename);
     //exit_error("Image %s does not have binary PGM header.\n",filename);
 
-  tmp1 = getint(fd); //X_SIZE
-  tmp2 = getint(fd); //Y_SIZE
-  tmp3 = getint(fd); //maxval
+  fgets(dummy,1000,fd); //used these to get rid of header items from pgm file and replace getint()
+  fgets(dummy,1000,fd);
+  fgets(dummy,1000,fd);
+  fgets(dummy,1000,fd);
 
 /* }}} */
 
