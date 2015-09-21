@@ -7,7 +7,7 @@ import "c_handshake";
 import "c_double_handshake";
 import "c_queue";
 
-behavior susan_edge_detector(void)
+behavior Main(void)
 {
 	c_double_handshake	image_buffer_in;
 	c_queue			image_buffer_out(1ul);

@@ -20,8 +20,8 @@ susan_edge_detector: susan_edge_detector.sc Makefile
 	$(CC) susan_edge_detector -vv -ww
 
 test:
-	./susan 
+	./susan_edge_detector
 	$(CMP) $(OUTFILE) $(GOLDFILE)
 
 clean:
-	$(RM) *.si *.sir $(OUTFILE)
+	$(RM) *.si *.sir *.exe susan_edge_detector $(OUTFILE)

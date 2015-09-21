@@ -7,7 +7,7 @@
 
 import "c_queue";
 
-behavior Monitor(i_receiver port_in3)
+behavior monitor(i_receiver port_in3)
 {
   FILE  *fd;
   char filename [] = OUT_FILE;
