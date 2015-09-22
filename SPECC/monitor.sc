@@ -16,6 +16,7 @@ behavior monitor(i_receiver port_in3)
   void main(void)
   {
     port_in3.receive(in3, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("in3 is received\n");
 
 #ifdef FOPENB
     if ((fd=fopen(filename,"wb")) == NULL) 
@@ -34,5 +35,6 @@ behavior monitor(i_receiver port_in3)
     //exit_error("Can't write image %s.\n",filename);
 
     fclose(fd);
+    printf("output is written to %s\n",OUT_FILE);
   }
 };

@@ -8,12 +8,12 @@ behavior detect_edges(i_receiver port_in1, i_sender port_in2, i_sender port_r, i
 {
 	c_double_handshake    com_bp;
         setup_brightness_lut  setupBrightnessLut(com_bp);
-	susan_edges	      susanEdges(port_in1,port_r,port_mid1,com_bp);
+	susan_edges	      susanEdges(port_in1,port_in2,port_r,port_mid1,com_bp);
 	
 	void main(void)
 	{
-		setupBrightnessLut.main();
-		susanEdges.main();
+	par{	setupBrightnessLut.main();
+		susanEdges.main();}
 	}
 };
 

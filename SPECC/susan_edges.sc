@@ -7,7 +7,7 @@
 
 import "c_double_handshake";
 
-behavior susan_edges(i_receiver port_in1,i_sender port_r,i_sender port_mid1,i_receiver port_bp)
+behavior susan_edges(i_receiver port_in1,i_sender port_in2,i_sender port_r,i_sender port_mid1,i_receiver port_bp)
 {
 
 unsigned char in1[X_SIZE*Y_SIZE];
@@ -22,9 +22,13 @@ int max_no = 2650;
 
 void main(void)
 {
+  printf("start susan_edges\n");
   port_in1.receive(in1, X_SIZE*Y_SIZE*sizeof(unsigned char));
-  port_bp.receive(bp, X_SIZE*Y_SIZE*sizeof(unsigned char));
+  printf("in1 is received\n");
+  port_bp.receive(bp, 516*sizeof(unsigned char));
+  printf("bp is received\n");
 
+  memset (mid,100,X_SIZE * Y_SIZE); //Added by AJG, looks like we forgot this
   memset (r,0,X_SIZE * Y_SIZE * sizeof(int));
 
   for (i=3;i<Y_SIZE-3;i++)
@@ -250,8 +254,13 @@ void main(void)
       }
     }
 
+    printf("start send r and mid\n");
     port_r.send(r, X_SIZE*Y_SIZE*sizeof(int));
+    printf("r is sent\n");
     port_mid1.send(mid, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("mid1 is sent\n");
+    port_in2.send(in1, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("in2 is sent\n");
 }
 
 };

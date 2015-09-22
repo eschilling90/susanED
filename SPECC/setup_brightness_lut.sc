@@ -12,6 +12,7 @@ unsigned char bp[516];
 
   void main(void)
   {
+    printf("start setup lut\n");
     for(k=-256;k<257;k++)
     {
       temp=((float)k)/((float)thresh);
@@ -21,5 +22,6 @@ unsigned char bp[516];
       bp[k+258]= (unsigned char)temp;
     }
     port_bp.send(bp, 516*sizeof(unsigned char));
+    printf("bp is sent\n");
   }
 };

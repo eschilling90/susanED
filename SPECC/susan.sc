@@ -1,8 +1,11 @@
+#include <stdio.h>
+
 import "detect_edges";
 import "susan_thin";
 import "edge_draw";
 
 import "c_double_handshake";
+import "c_handshake";
 
 behavior susan(i_receive port_start,i_receiver port_in1,i_sender port_in3)
 {
@@ -13,10 +16,11 @@ behavior susan(i_receive port_start,i_receiver port_in1,i_sender port_in3)
 
 	void main(void)
 	{
-	    port_start.receive;
-		detectEdges.main();
+	    port_start.receive();
+            printf("start signal is received\n");
+	par{	detectEdges.main();
 		susanThin.main();
-		edgeDraw.main();
+		edgeDraw.main();}
 	}
 };
 

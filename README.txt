@@ -63,4 +63,9 @@ in - Tony <- DONE
 mid - Alex <- DONE
 r  - Erik <- DONE
 2) move x_size and y_size into header files and stop passing them into files <- DONE
-3) start conversion to specc
+3) start conversion to specc <- DONE
+4) make sure ordering of parallel blocks is correct <- DONE
+5) make sure queue is of size X*Y (7220) <- DONE
+6) get rid of all seg faults and deadlocks <- DONE
+7) make sure out.pgm and golden.pgm are identical
+

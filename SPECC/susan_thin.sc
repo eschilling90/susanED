@@ -18,8 +18,11 @@ unsigned char *mp;
 
   void main(void)
   {
-    port_mid1.receive(mid, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("start susan thin\n");
     port_r.receive(r, X_SIZE*Y_SIZE*sizeof(int));
+    printf("r is received\n");
+    port_mid1.receive(mid, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("mid1 is received\n");
   for (i=4;i<Y_SIZE-4;i++)
     for (j=4;j<X_SIZE-4;j++)
       if (mid[i*X_SIZE+j]<8)
@@ -180,6 +183,8 @@ unsigned char *mp;
           }
         }
       }
+    printf("start to send mid2\n");
     port_mid2.send(mid, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("mid2 is sent\n");
   }
 };

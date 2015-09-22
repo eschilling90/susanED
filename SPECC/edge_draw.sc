@@ -12,12 +12,22 @@ int   i;
 unsigned char mid[76*95];
 unsigned char in2[76*95];
 unsigned char *midp, *inp; 
+int j;
 
   void main(void)
   {
-    port_mid2.receive(mid, X_SIZE*Y_SIZE*sizeof(unsigned char));
     port_in2.receive(in2, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("in2 is received\n");
+    port_mid2.receive(mid, X_SIZE*Y_SIZE*sizeof(unsigned char));
+    printf("mid2 is received\n");
   
+
+
+/*for(j=0;j<X_SIZE*Y_SIZE;j++)
+{
+	printf("mid[%d] : %c\n",j,mid[j]);
+}  */
+
     /* mark 3x3 white block around each edge point */
     midp = mid;
     for (i=0; i<X_SIZE*Y_SIZE; i++)
@@ -41,8 +51,9 @@ unsigned char *midp, *inp;
       *(in2 + (midp - mid)) = 0;
     midp++;
   }
-
+  printf("start to send in3\n");
   port_in3.send(in2, X_SIZE*Y_SIZE*sizeof(unsigned char));
+  printf("in3 is sent\n");
   }
 };
 
