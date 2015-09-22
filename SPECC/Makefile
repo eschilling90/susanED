@@ -24,4 +24,4 @@ test:
 	$(CMP) $(OUTFILE) $(GOLDFILE)
 
 clean:
-	$(RM) *.si *.sir *.exe susan_edge_detector $(OUTFILE)
+	$(RM) *.si *.sir *.exe *.cc *.h *.o out.pgm susan_edge_detector $(OUTFILE)
