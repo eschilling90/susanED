@@ -67,5 +67,6 @@ r  - Erik <- DONE
 4) make sure ordering of parallel blocks is correct <- DONE
 5) make sure queue is of size X*Y (7220) <- DONE
 6) get rid of all seg faults and deadlocks <- DONE
-7) make sure out.pgm and golden.pgm are identical
+7) make sure out.pgm and golden.pgm are identical <- DONE
+8) put susan.sc in a FSM <- DONE
 
