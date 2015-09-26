@@ -188,3 +188,13 @@ unsigned char *mp;
     printf("mid2 is sent\n");
   }
 };
+
+behavior susan_thin_fsm(i_receiver port_r, i_receiver port_mid1, i_sender port_mid2)
+{
+  susan_thin thin(port_r, port_mid1, port_mid2);
+
+  void main(void)
+  {
+    fsm{thin: goto thin;}
+  }
+};

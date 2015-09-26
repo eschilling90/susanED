@@ -8,7 +8,7 @@ import "c_queue";
 import "c_handshake";
 
 #define QUEUE_SIZE 7220ul
-#define QUEUE_SIZE_INT 28880ul //sizeof(int) * 7220ul
+#define QUEUE_SIZE_INT 28880ul 
 
 
 

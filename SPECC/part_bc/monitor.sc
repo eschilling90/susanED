@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <sim.sh>
 
 #define X_SIZE 76
 #define Y_SIZE 95
@@ -13,6 +14,7 @@ behavior monitor(i_receiver port_in3)
   FILE  *fd;
   char filename [] = OUT_FILE;
   unsigned char in3[X_SIZE*Y_SIZE];
+  sim_time_string buf;
 
   void main(void)
   {
@@ -37,6 +39,7 @@ behavior monitor(i_receiver port_in3)
 
     fclose(fd);
     printf("output is written to %s\n",OUT_FILE);
+    printf("Elapse time%4s: Finished!\n", time2str(buf, now()));
 
     exit(0);
   }

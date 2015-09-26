@@ -1,6 +1,6 @@
 #include <stdlib.h>
 import "stimulus";
-import "susan";
+import "design";
 import "monitor";
 
 import "c_handshake";
