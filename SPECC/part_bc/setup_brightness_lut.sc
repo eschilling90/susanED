@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
-import "c_double_handshake";
+//import "c_double_handshake";
+import "c_queue";
 
 behavior setup_brightness_lut(i_sender port_bp)
 {
@@ -23,5 +24,14 @@ unsigned char bp[516];
     }
     port_bp.send(bp, 516*sizeof(unsigned char));
     printf("bp is sent\n");
+  }
+};
+
+behavior brt_lut_fsm(i_sender port_bp)
+{
+  setup_brightness_lut inst(port_bp);
+  void main(void)
+  {
+    fsm{inst: goto inst;}
   }
 };

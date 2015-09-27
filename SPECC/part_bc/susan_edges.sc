@@ -5,7 +5,7 @@
 #define X_SIZE 76
 #define Y_SIZE 95
 
-import "c_double_handshake";
+//import "c_double_handshake";
 import "c_queue";
 
 behavior susan_edges(i_receiver port_in1,i_sender port_in2,i_sender port_r,i_sender port_mid1,i_receiver port_bp)
@@ -264,6 +264,15 @@ void main(void)
     printf("in2 is sent\n");
 }
 
+};
+
+behavior susan_edges_fsm(i_receiver port_in1,i_sender port_in2,i_sender port_r,i_sender port_mid1,i_receiver port_bp)
+{
+  susan_edges inst(port_in1, port_in2, port_r, port_mid1, port_bp);
+  void main(void)
+  {
+    fsm{inst: goto inst;}
+  }
 };
 
 
