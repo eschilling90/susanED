@@ -17,7 +17,7 @@ behavior Monitor(i_receiver img, i_receiver start_time_channel)
         for(n = 0; n < NR_IMGS; n++) 
         {
 	    start_time_channel.receive(&start_time, sizeof(sim_time));
-            sprintf(filename, "out.pgm",  n);
+            sprintf(filename, "out.pgm");
 
 #ifdef FOPENB
             if ((fd=fopen(filename,"wb")) == NULL) 

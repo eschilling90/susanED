@@ -76,7 +76,7 @@ behavior SusanEdgesThread_PartA(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZ
                     r[i*X_SIZE+j] = max_no - n;
             }
 
-     waitfor(19000000);                          
+    waitfor(19000000);                           
     }           
     
 };  
@@ -256,8 +256,8 @@ behavior SusanEdgesThread_PartB(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZ
                                 mid[i*X_SIZE+j] = 2;	
                         }
                     }
-                }           
-    waitfor(20000000);                 
+                }  
+    waitfor(20000000);                          
     }           
     
 };  
