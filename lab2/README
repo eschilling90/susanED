@@ -1,10 +1,8 @@
-10/15/2015 - Part a.1 mostly finished
-
 TODO
-Part a.1 <-- This is potentially done
-Part a.2 <-- Partition I is done
-Part a.3
-Part a.4
+Part a.1 <-- DONE
+Part a.2 <-- Partition 1 is complete, need to implement RTOS for partition 2
+Part a.3 <-- Implement RTOS for partition 1
+Part a.4 <-- simulate (should not take any time at all)
 --Part a due 10/21 (is this true?)
 Part b.1
 Part b.2

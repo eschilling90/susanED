@@ -1,1 +1,2 @@
 10/15/2015 - AJG - Added waitfor() statements at the end of each main loop (not sure if this is correct).  Generated .vcd file for the top level
+10/16/2015 - COMPLETED

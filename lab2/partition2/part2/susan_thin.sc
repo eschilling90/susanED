@@ -14,7 +14,7 @@ behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID)
                 m, n, a, b, x, y, i, j;
         uchar *mp;
 
-	    //printf("SusanThin(th%d) Start\n",thID);
+
 	    for (i=4+(Y_SIZE-4-4)/PROCESSORS*thID; i<4+(Y_SIZE-4-4)/PROCESSORS*(thID+1) + (thID+1==PROCESSORS && (Y_SIZE-4-4)%PROCESSORS!=0 ? (Y_SIZE-4-4)%PROCESSORS : 0); i++)         		          
         //for (i=4;i<Y_SIZE-4;i++)
             for (j=4;j<X_SIZE-4;j++)
@@ -198,8 +198,7 @@ behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID)
                         }
                     }
                 } 
-    waitfor(6400000);
-   // printf("SusanThin(th%d) End\n",thID);
+    waitfor(180000);
     }                
 };
 
@@ -226,9 +225,9 @@ behavior SusanThin(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE])
     SusanThinThread susan_thin_thread_1(r, mid, 1);
     
     void main(void) {        
-       fsm {
-            susan_thin_thread_0 : goto susan_thin_thread_1;
-            susan_thin_thread_1 : {}
+       par {
+            susan_thin_thread_0;
+            susan_thin_thread_1;
         }                   
     }
 
@@ -248,7 +247,7 @@ behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_
         fsm {
             susan_thin_read_input: goto susan_thin;
             susan_thin: { goto susan_thin_write_output;}
-            susan_thin_write_output: {}
+            susan_thin_write_output: goto susan_thin_read_input;
         }
     }
     
