@@ -83,7 +83,7 @@ behavior EdgeDraw_PartA(uchar image_buffer[7220], uchar mid[7220])
     void main(void) {
       fsm {
             edge_draw_a_thread_0 : goto edge_draw_a_thread_1;
-            edge_draw_a_thread_1 : goto edge_draw_a_thread_0;
+            edge_draw_a_thread_1 : {}
         }    
     }     
 };
@@ -97,7 +97,7 @@ behavior EdgeDraw_PartB(uchar image_buffer[7220], uchar mid[7220])
     void main(void) {
       fsm {
             edge_draw_b_thread_0: goto edge_draw_b_thread_1;
-            edge_draw_b_thread_1: goto edge_draw_b_thread_0;
+            edge_draw_b_thread_1: {}
         }    
     }     
 };
@@ -134,9 +134,7 @@ behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uch
     EdgeDraw edge_draw(in_image, in_mid,  out_image);
     
     void main(void) {
-        fsm {
-            edge_draw: {goto edge_draw;}
-        }
+        edge_draw.main();
     }
     
 };

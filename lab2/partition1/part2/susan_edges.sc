@@ -295,7 +295,7 @@ behavior SusanEdges_PartA (uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], u
     void main(void) {
         fsm {
             susan_edges_a_thread_0 : goto susan_edges_a_thread_1;
-            susan_edges_a_thread_1 : goto susan_edges_a_thread_0;
+            susan_edges_a_thread_1 : {}
         }
     }
 };
@@ -308,7 +308,7 @@ behavior SusanEdges_PartB(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], uc
     void main(void) {                 
         fsm {
             susan_edges_b_thread_0 : goto susan_edges_b_thread_1;
-            susan_edges_b_thread_1 : goto susan_edges_b_thread_0;
+            susan_edges_b_thread_1 : {}
         }  
     }
 };

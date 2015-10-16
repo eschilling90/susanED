@@ -228,7 +228,7 @@ behavior SusanThin(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE])
     void main(void) {        
        fsm {
             susan_thin_thread_0 : goto susan_thin_thread_1;
-            susan_thin_thread_1 : goto susan_thin_thread_0;
+            susan_thin_thread_1 : {}
         }                   
     }
 
@@ -248,7 +248,7 @@ behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_
         fsm {
             susan_thin_read_input: goto susan_thin;
             susan_thin: { goto susan_thin_write_output;}
-            susan_thin_write_output: goto susan_thin_read_input;
+            susan_thin_write_output: {}
         }
     }
     
