@@ -1,1 +1,6 @@
 10/16/2015 - AJG - Copied over files from part1, need to implement OS
+
+TODO
+parallel behaviors --> tasks
+waitfor() --> os_timewait()
+par{} --> par_start()/par_end()
