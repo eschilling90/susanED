@@ -89,12 +89,12 @@ channel RTOS implements OS_API
   {
     waitfor(time);
     thread[threadID].running = 0;
-    if (threadID == 0)
+    if (threadID == 0 && thread[1].registered)
     {
       notify th0_chunk_done;
       wait th1_chunk_done;
     }
-    else
+    else if (threadID == 1 && thread[0].registered)
     {
       notify th1_chunk_done;
       wait th0_chunk_done;
