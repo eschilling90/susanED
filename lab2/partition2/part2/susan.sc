@@ -6,13 +6,14 @@ import "c_int7220_queue";
 import "detect_edges";
 import "susan_thin";
 import "edge_draw";
+import "rtos";
 
 
 
 behavior Susan_pe1(i_uchar7220_receiver in_image, i_int7220_sender r_pe1_pe2, i_uchar7220_sender mid_pe1_pe2, i_uchar7220_sender image_pe1_pe2) 
 {
-
-    Edges edges(in_image, r_pe1_pe2, mid_pe1_pe2, image_pe1_pe2);
+    RTOS rtos;
+    Edges edges(in_image, r_pe1_pe2, mid_pe1_pe2, image_pe1_pe2, rtos);
         
     void main(void)
     {

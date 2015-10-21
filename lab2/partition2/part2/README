@@ -4,3 +4,18 @@ TODO
 parallel behaviors --> tasks
 waitfor() --> os_timewait()
 par{} --> par_start()/par_end()
+
+Tada
+Starting process 1...
+Starting process 2...
+Starting process 3...
+Starting process 4...
+Starting process 5...
+Total process time: 79 us
+Total process time: 157 us
+Total process time: 235 us
+Total process time: 235 us
+Total process time: 235 us
+Current time: 391 us
+diff -s out.pgm golden.pgm
+Files out.pgm and golden.pgm are identical
