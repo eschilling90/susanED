@@ -2,8 +2,9 @@
 
 import "c_uchar7220_queue";
 import "c_int7220_queue";
+import "rtos";
 
-behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID)
+behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID, OS_API api_port)
 {
 
     void main (void) {
@@ -13,6 +14,9 @@ behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID)
                 b00, b02, b20, b22,
                 m, n, a, b, x, y, i, j;
         uchar *mp;
+
+	api_port.os_register(thID);
+	api_port.acquire_running_key(thID);
 
 	    //printf("SusanThin(th%d) Start\n",thID);
 	    for (i=4+(Y_SIZE-4-4)/PROCESSORS*thID; i<4+(Y_SIZE-4-4)/PROCESSORS*(thID+1) + (thID+1==PROCESSORS && (Y_SIZE-4-4)%PROCESSORS!=0 ? (Y_SIZE-4-4)%PROCESSORS : 0); i++)         		          
@@ -198,7 +202,9 @@ behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID)
                         }
                     }
                 } 
-    waitfor(6400000);
+    //waitfor(6400000);
+    api_port.os_timewait(thID,6400000);
+    api_port.os_terminate(thID);
    // printf("SusanThin(th%d) End\n",thID);
     }                
 };
@@ -219,22 +225,28 @@ behavior SusanThin_WriteOutput(i_uchar7220_sender out_mid, uchar mid[IMAGE_SIZE]
     }
 };
 
-behavior SusanThin(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE])
+behavior SusanThin(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], OS_API api_port)
 {
  
-    SusanThinThread susan_thin_thread_0(r, mid, 0);
-    SusanThinThread susan_thin_thread_1(r, mid, 1);
+    SusanThinThread susan_thin_thread_0(r, mid, 0, api_port);
+    SusanThinThread susan_thin_thread_1(r, mid, 1, api_port);
     
     void main(void) {        
-       fsm {
-            susan_thin_thread_0 : goto susan_thin_thread_1;
-            susan_thin_thread_1 : {}
-        }                   
-    }
+       //fsm {
+       //     susan_thin_thread_0 : goto susan_thin_thread_1;
+       //     susan_thin_thread_1 : {}
+       // }  
+	api_port.par_start();
+	par{
+	    susan_thin_thread_0;
+	    susan_thin_thread_1;	                 
+    	}
+	api_port.par_end();
+	}
 
 };
 
-behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_sender out_mid)
+behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_sender out_mid, OS_API api_port)
 {
 
     int r[IMAGE_SIZE];
@@ -242,14 +254,16 @@ behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_
  
     SusanThin_ReadInput susan_thin_read_input(in_r, in_mid, r, mid);
     SusanThin_WriteOutput susan_thin_write_output(out_mid, mid);   
-    SusanThin susan_thin(r, mid);
+    SusanThin susan_thin(r, mid,api_port);
     
     void main(void) {
+	//printf("Susan thin start\n");
         fsm {
             susan_thin_read_input: goto susan_thin;
             susan_thin: { goto susan_thin_write_output;}
             susan_thin_write_output: {}
         }
+	//printf("Susan thin end\n");
     }
     
 };

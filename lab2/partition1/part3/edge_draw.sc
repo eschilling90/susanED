@@ -1,8 +1,9 @@
 #include "susan.sh"
 
 import "c_uchar7220_queue";
+import "rtos";
 
-behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int thID)
+behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int thID, OS_API api_port)
 {
 
     void main(void) {
@@ -12,6 +13,10 @@ behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int 
         int drawing_mode;
         
         drawing_mode = DRAWING_MODE;
+	
+	api_port.os_register(thID);
+	api_port.acquire_running_key(thID);
+
         if (drawing_mode==0)
         {
             /* mark 3x3 white block around each edge point */
@@ -28,13 +33,15 @@ behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int 
                 midp++;
             }
         }
-     waitfor(12000000);
+     //waitfor(12000000);
+     api_port.os_timewait(thID,12000000);
+     api_port.os_terminate(thID);
      }   
    
 };    
 
 
-behavior EdgeDrawThread_PartB(uchar image_buffer[7220], uchar mid[7220], in int thID)
+behavior EdgeDrawThread_PartB(uchar image_buffer[7220], uchar mid[7220], in int thID, OS_API api_port)
 {
 
     void main(void) {
@@ -44,6 +51,9 @@ behavior EdgeDrawThread_PartB(uchar image_buffer[7220], uchar mid[7220], in int 
         int drawing_mode;
         
         drawing_mode = DRAWING_MODE;
+	
+	api_port.os_register(thID);
+	api_port.acquire_running_key(thID);
      
         /* now mark 1 black pixel at each edge point */
         midp=mid+ IMAGE_SIZE/PROCESSORS *thID;
@@ -54,7 +64,9 @@ behavior EdgeDrawThread_PartB(uchar image_buffer[7220], uchar mid[7220], in int 
                 *(image_buffer+ (midp - mid)) = 0;
             midp++;
         }
-    waitfor(12000000);
+    //waitfor(12000000);
+    api_port.os_timewait(thID,12000000);
+    api_port.os_terminate(thID);
     }
     
 };    
@@ -74,36 +86,43 @@ behavior EdgeDraw_WriteOutput(uchar image_buffer[IMAGE_SIZE],  i_uchar7220_sende
     }
 };
 
-behavior EdgeDraw_PartA(uchar image_buffer[7220], uchar mid[7220])
+behavior EdgeDraw_PartA(uchar image_buffer[7220], uchar mid[7220],OS_API api_port)
 {
 
-    EdgeDrawThread_PartA edge_draw_a_thread_0(image_buffer, mid, 0);
-    EdgeDrawThread_PartA edge_draw_a_thread_1(image_buffer, mid, 1);
+    EdgeDrawThread_PartA edge_draw_a_thread_0(image_buffer, mid, 0, api_port);
+    EdgeDrawThread_PartA edge_draw_a_thread_1(image_buffer, mid, 1, api_port);
     
     void main(void) {
-      fsm {
-            edge_draw_a_thread_0 : goto edge_draw_a_thread_1;
-            edge_draw_a_thread_1 : {}
+	api_port.par_start();
+      //fsm {
+	par {
+            //edge_draw_a_thread_0 : goto edge_draw_a_thread_1;
+            //edge_draw_a_thread_1 : {}
+	    edge_draw_a_thread_0;
+	    edge_draw_a_thread_1;
         }    
+	api_port.par_end();
     }     
 };
 
-behavior EdgeDraw_PartB(uchar image_buffer[7220], uchar mid[7220])
+behavior EdgeDraw_PartB(uchar image_buffer[7220], uchar mid[7220], OS_API api_port)
 {
 
-    EdgeDrawThread_PartB edge_draw_b_thread_0(image_buffer, mid, 0);
-    EdgeDrawThread_PartB edge_draw_b_thread_1(image_buffer, mid, 1);
+    EdgeDrawThread_PartB edge_draw_b_thread_0(image_buffer, mid, 0, api_port);
+    EdgeDrawThread_PartB edge_draw_b_thread_1(image_buffer, mid, 1, api_port);
     
     void main(void) {
-      fsm {
-            edge_draw_b_thread_0: goto edge_draw_b_thread_1;
-            edge_draw_b_thread_1: {}
+      api_port.par_start();
+      par {
+            edge_draw_b_thread_0;
+            edge_draw_b_thread_1;
         }    
+      api_port.par_end();
     }     
 };
 
 
-behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image)
+behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image, OS_API api_port)
 {
 
     
@@ -112,8 +131,8 @@ behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i
     
     EdgeDraw_ReadInput edge_draw_read_input(in_image, in_mid, image_buffer, mid);
     EdgeDraw_WriteOutput edge_draw_write_output(image_buffer, out_image);
-    EdgeDraw_PartA edge_draw_a(image_buffer, mid);
-    EdgeDraw_PartB edge_draw_b(image_buffer, mid);
+    EdgeDraw_PartA edge_draw_a(image_buffer, mid, api_port);
+    EdgeDraw_PartB edge_draw_b(image_buffer, mid, api_port);
 
     
     void main(void) {
@@ -128,10 +147,10 @@ behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i
     
 };    
 
-behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image)
+behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image, OS_API api_port)
 {
 
-    EdgeDraw edge_draw(in_image, in_mid,  out_image);
+    EdgeDraw edge_draw(in_image, in_mid,  out_image, api_port);
     
     void main(void) {
         edge_draw.main();
