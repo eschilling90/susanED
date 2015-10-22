@@ -3,6 +3,18 @@
 #define THE_OTHER_THREAD(x) (1-(x))
 #define MAX_THREAD_NUM 3
 
+#define THREAD_NOTIFY(x) switch (x) {\
+                           case 0: notify run_th0; break;\
+                           case 1: notify run_th1; break;\
+                           case 2: notify run_th2; break;\
+			 }
+
+#define THREAD_WAIT(x)   switch (x) {\
+                           case 0: wait run_th0; break;\
+                           case 1: wait run_th1; break;\
+                           case 2: wait run_th2; break;\
+			 }
+
 typedef struct os_thread
 {
   int registered;	// an actiated thread
@@ -15,36 +27,61 @@ typedef struct array_queue
   int ID[MAX_THREAD_NUM];
 }array_queue;
 
-void enQueue(array_queue q, int threadID)
+void initQueue(array_queue* q)
+{
+  int i;      
+  for(i = 0; i < MAX_THREAD_NUM; i++)
+  {         
+      q->valid[i] = 0;
+      q->ID[i] = 0;
+  }
+}
+
+
+void enQueue(array_queue* q, int threadID)
 {
   int i;
   for(i = 0; i < MAX_THREAD_NUM; i++)
-    if(q.valid[i] == 0)
+    if(q->valid[i] == 0)
     {
-      q.valid[i] = 1;
-      q.ID = threadID;
+      q->valid[i] = 1;
+      q->ID[i] = threadID;
+      break;
     }
 }
 
-int deQueue(array_queue q)
+int deQueue(array_queue* q)
 {
   int i;
   int tmp;
 
-  tmp = q.ID[0];
+  if(q->valid[0] == 0)	//empty
+    tmp = 3;
+  else
+    tmp = q->ID[0];
+
   for(i = 1; i < MAX_THREAD_NUM; i++)
-    if(q.valid[i] == 1)
+    if(q->valid[i] == 1)
     {
-      q.valid[i-1] = q.valid[i];
-      q.ID[i-1] = q.ID[i];
+      q->valid[i-1] = q->valid[i];
+      q->ID[i-1] = q->ID[i];
+      q->valid[i] = 0;
     }
   return tmp;
 }
 
-int is_empty(array_queue q)
+int is_empty(array_queue* q)
 {
-  return !(q.valid[0]);
+  return !(q->valid[0]);
 }
+
+dbg_print_queue(array_queue* q)
+{
+  int i;
+  for(i = 0; i < MAX_THREAD_NUM; i++)
+    printf("No.%d: valid = %d, threadID = %d\n", i, q->valid[i], q->ID[i]);
+}
+
 
 
 interface OS_API
@@ -93,31 +130,37 @@ channel RTOS implements OS_API
 
   void os_init()
   {
+printf("init os\n");
     thread[0].registered = 0;
     thread[0].running = 0;
     thread[1].registered = 0;
     thread[1].running = 0;
     thread[2].registered = 0;
     thread[2].running = 0;
+
+    initQueue(&ready_queue);
   }
 
   void os_register(int threadID)
   {
     thread[threadID].registered = 1;
-    enQueue(ready_queue, threadID);
 printf("th%d registered!\n", threadID);
+    enQueue(&ready_queue, threadID);
   }
 
   void os_terminate(int threadID)
   {
+    int next_thread;
+
     thread[threadID].registered = 0;
     thread[threadID].running = 0;
-    if (threadID == 0)
-      notify th0_chunk_done;
-    else if (threadID == 1)
-      notify th1_chunk_done;
-    else
-      notify th2_chunk_done;
+    next_thread = deQueue(&ready_queue);    
+    if (next_thread == 0)
+      notify run_th0;
+    else if (next_thread == 1)
+      notify run_th1;
+    else if (next_thread == 2)
+      notify run_th2;
 printf("th%d terminated!\n", threadID);
   }
 
@@ -134,69 +177,25 @@ printf("th%d terminated!\n", threadID);
   {
 printf("th%d tries getting the key!\n", threadID);
     if (is_thread_running())	// the other thread is running
-      if (tail_in_queue == 0)
-        wait th0_chunk_done;
-      else if (tail_in_queue == 1)
-        wait th1_chunk_done;
-      else
-        wait th2_chunk_done;
+      THREAD_WAIT(threadID)
+    else
+      deQueue(&ready_queue);
     thread[threadID].running = 1;
-    tail_in_queue = threadID;
 printf("th%d got the key!\n", threadID);
-printf("Now the tail in queue is th%d!\n", threadID);
   }
 
   void os_timewait(int threadID, int time)
   {
+    int next_thread;
+
     waitfor(time);
     thread[threadID].running = 0;
 printf("th%d: switch context!\n", threadID);
-    if (threadID == 0 && (thread[1].registered || thread[2].registered))
-    {
-      notify th0_chunk_done;
-      if (tail_in_queue == 1)
-      {
-        tail_in_queue = 0;
-printf("Now the tail in queue is th%d!\n", threadID);
-        wait th1_chunk_done;
-      }
-      else
-      {
-        tail_in_queue = 0;
-printf("Now the tail in queue is th%d!\n", threadID);
-        wait th2_chunk_done;
-      }
-    }
-    else if (threadID == 1 && (thread[0].registered || thread[2].registered))
-    {
-      notify th1_chunk_done;
-      if (tail_in_queue == 0)
-      {
-        tail_in_queue = 1;
-printf("Now the tail in queue is th%d!\n", threadID);
-        wait th0_chunk_done;
-      }
-      else
-      {
-        tail_in_queue = 1;
-printf("Now the tail in queue is th%d!\n", threadID);
-        wait th2_chunk_done;
-      }
-    }
-    else if (threadID == 2 && (thread[0].registered || thread[1].registered))
-    {
-      notify th2_chunk_done;
-      if (tail_in_queue == 0)
-      {
-        tail_in_queue = 2;
-        wait th0_chunk_done;
-      }
-      else
-      {
-        tail_in_queue = 2;
-        wait th1_chunk_done;
-      }
-    }
+    enQueue(&ready_queue, threadID);
+    next_thread = deQueue(&ready_queue);
+printf("next thread is th%d!\n", next_thread);
+    THREAD_NOTIFY(next_thread);
+    THREAD_WAIT(threadID);
     thread[threadID].running = 1;
   }
 
