@@ -1,4 +1,5 @@
-#include <c_typed_queue.sh>	/* make the template available */
+//#include <c_typed_queue.sh>	/* make the template available */
+#include "os_typed_queue.sh"	/* make the template available */
 
 typedef int  int7220[7220];
 

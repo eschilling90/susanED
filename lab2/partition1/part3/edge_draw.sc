@@ -1,6 +1,7 @@
 #include "susan.sh"
 
 import "c_uchar7220_queue";
+import "c_uchar7220right_queue";
 import "rtos";
 import "full_rtos";
 
@@ -82,15 +83,15 @@ behavior EdgeDrawThread_PartB(uchar image_buffer[7220], uchar mid[7220], in int 
 behavior EdgeDraw_ReadInput(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid, uchar image_buffer[IMAGE_SIZE], uchar mid[IMAGE_SIZE])
 {
     void main(void) {
-        in_image.receive(&image_buffer);
-        in_mid.receive(&mid);
+        in_image.receive(&image_buffer, 2);
+        in_mid.receive(&mid, 2);
     }      
 };
 
-behavior EdgeDraw_WriteOutput(uchar image_buffer[IMAGE_SIZE],  i_uchar7220_sender out_image)
+behavior EdgeDraw_WriteOutput(uchar image_buffer[IMAGE_SIZE],  i_uchar7220right_sender out_image)
 {
     void main(void) {
-        out_image.send(image_buffer);
+        out_image.send(image_buffer, 2);
     }
 };
 
@@ -130,7 +131,7 @@ behavior EdgeDraw_PartB(uchar image_buffer[7220], uchar mid[7220], OS_API api_po
 };
 
 
-behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image, OS_API api_port)
+behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220right_sender out_image, OS_API api_port)
 {
 
     
@@ -155,7 +156,7 @@ behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i
     
 };    
 
-behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image)
+behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220right_sender out_image)
 {
 
     RTOS draw_rtos;
@@ -169,7 +170,7 @@ behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uch
 
 
 
-behavior Draw_wrapper(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image, in int thID, OS_API_TOP api_port_top)
+behavior Draw_wrapper(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220right_sender out_image, in int thID, OS_API_TOP api_port_top) implements OS_REG
 {
 
   void os_register(int threadID)

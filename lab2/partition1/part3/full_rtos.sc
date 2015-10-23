@@ -61,12 +61,12 @@ int deQueue(array_queue* q)
     tmp = q->ID[0];
 
   for(i = 1; i < MAX_THREAD_NUM; i++)
-    if(q->valid[i] == 1)
-    {
-      q->valid[i-1] = q->valid[i];
-      q->ID[i-1] = q->ID[i];
-      q->valid[i] = 0;
-    }
+  {
+    q->valid[i-1] = q->valid[i];
+    q->ID[i-1] = q->ID[i];
+  }
+  q->valid[2] = 0;
+  q->ID[2] = 0;
   return tmp;
 }
 
@@ -75,7 +75,7 @@ int is_empty(array_queue* q)
   return !(q->valid[0]);
 }
 
-dbg_print_queue(array_queue* q)
+void dbg_print_queue(array_queue* q)
 {
   int i;
   for(i = 0; i < MAX_THREAD_NUM; i++)
@@ -119,6 +119,12 @@ interface OS_API_TOP
    */
   void par_start();
   void par_end();
+
+  /*
+   * @intro: wapper for wait
+   */
+  void pre_wait(int);
+  void post_wait(int);
 };
 
 channel RTOS_TOP implements OS_API_TOP
@@ -133,7 +139,7 @@ channel RTOS_TOP implements OS_API_TOP
 
   void os_init()
   {
-printf("init os\n");
+//printf("init os\n");
     thread[0].registered = 0;
     thread[0].running = 0;
     thread[1].registered = 0;
@@ -147,7 +153,7 @@ printf("init os\n");
   void os_register(int threadID)
   {
     thread[threadID].registered = 1;
-printf("th%d registered!\n", threadID);
+//printf("th%d registered!\n", threadID);
     enQueue(&ready_queue, threadID);
   }
 
@@ -164,7 +170,7 @@ printf("th%d registered!\n", threadID);
       notify run_th1;
     else if (next_thread == 2)
       notify run_th2;
-printf("th%d terminated!\n", threadID);
+//printf("th%d terminated, switch context to th%d!\n", threadID, next_thread);
   }
 
   int is_thread_running()
@@ -178,13 +184,13 @@ printf("th%d terminated!\n", threadID);
 
   void acquire_running_key(int threadID)
   {
-printf("th%d tries getting the key!\n", threadID);
+//printf("th%d tries getting the key!\n", threadID);
     if (is_thread_running())	// the other thread is running
       THREAD_WAIT(threadID)
     else
       deQueue(&ready_queue);
     thread[threadID].running = 1;
-printf("th%d got the key!\n", threadID);
+//printf("th%d got the key!\n", threadID);
   }
 
   void os_timewait(int threadID, int time)
@@ -193,10 +199,10 @@ printf("th%d got the key!\n", threadID);
 
     waitfor(time);
     thread[threadID].running = 0;
-printf("th%d: switch context!\n", threadID);
+//printf("th%d: switch context!\n", threadID);
     enQueue(&ready_queue, threadID);
     next_thread = deQueue(&ready_queue);
-printf("next thread is th%d!\n", next_thread);
+//printf("next thread is th%d!\n", next_thread);
     THREAD_NOTIFY(next_thread);
     THREAD_WAIT(threadID);
     thread[threadID].running = 1;
@@ -209,4 +215,21 @@ printf("next thread is th%d!\n", next_thread);
 
   void par_end(){}
 
+  void pre_wait(int threadID)
+  {
+    int next_thread;
+
+    thread[threadID].running = 0;
+//printf("th%d: switch context!\n", threadID);
+    next_thread = deQueue(&ready_queue);
+//printf("next thread is th%d!\n", next_thread);
+    THREAD_NOTIFY(next_thread);
+  }
+
+  void post_wait(int threadID)
+  {
+    enQueue(&ready_queue, threadID);
+    THREAD_WAIT(threadID);
+    thread[threadID].running = 1;
+  }
 };

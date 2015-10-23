@@ -1,6 +1,7 @@
 #include "susan.sh"
 
 import "c_uchar7220_queue";
+import "c_uchar7220left_queue";
 import "c_int7220_queue";
 import "rtos";
 
@@ -273,10 +274,10 @@ behavior SusanEdgesThread_PartB(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZ
     
 };  
 
-behavior  SusanEdges_ReadInput(i_uchar7220_receiver in_image, uchar in_image_buffer[IMAGE_SIZE], int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE]) 
+behavior  SusanEdges_ReadInput(i_uchar7220left_receiver in_image, uchar in_image_buffer[IMAGE_SIZE], int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE]) 
 {
     void main(void) {
-        in_image.receive(&in_image_buffer);
+        in_image.receive(&in_image_buffer, 0);
         
         memset (mid,100,X_SIZE * Y_SIZE); /* note not set to zero */
         memset (r,0,X_SIZE * Y_SIZE * sizeof(int));
@@ -289,9 +290,9 @@ behavior SusanEdges_WriteOutput(i_int7220_sender out_r, i_uchar7220_sender out_m
 {
 
     void main(void) {
-        out_r.send(r);
-        out_mid.send(mid);
-        out_image.send(out_image_buffer);
+        out_r.send(r, 0);
+        out_mid.send(mid, 0);
+        out_image.send(out_image_buffer, 0);
     }
 };
 
@@ -326,7 +327,7 @@ behavior SusanEdges_PartB(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], uc
     }
 };
 
-behavior SusanEdges(i_uchar7220_receiver in_image, i_int7220_sender out_r, i_uchar7220_sender out_mid, uchar bp[516], i_uchar7220_sender out_image, OS_API api_port)
+behavior SusanEdges(i_uchar7220left_receiver in_image, i_int7220_sender out_r, i_uchar7220_sender out_mid, uchar bp[516], i_uchar7220_sender out_image, OS_API api_port)
 {
   
     uchar image_buffer[IMAGE_SIZE];

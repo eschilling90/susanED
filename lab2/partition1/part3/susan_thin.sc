@@ -216,15 +216,15 @@ behavior SusanThin_ReadInput(i_int7220_receiver in_r, i_uchar7220_receiver in_mi
 {
 
     void main(void) {
-        in_r.receive(&r);
-        in_mid.receive(&mid);
+        in_r.receive(&r, 1);
+        in_mid.receive(&mid, 1);
     }
 };
 
 behavior SusanThin_WriteOutput(i_uchar7220_sender out_mid, uchar mid[IMAGE_SIZE])
 {
     void main(void) {
-        out_mid.send(mid);      
+        out_mid.send(mid, 1);      
     }
 };
 
@@ -274,7 +274,7 @@ behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_
 };
 
 //this will be used soon
-behavior Thin_wrapper(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_sender out_mid,in int thID, OS_API_TOP api_port_top)
+behavior Thin_wrapper(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_sender out_mid,in int thID, OS_API_TOP api_port_top) implements OS_REG
 {
 
   void os_register(int threadID)
