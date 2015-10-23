@@ -2,9 +2,15 @@
 
 import "c_uchar7220_queue";
 import "rtos";
+import "full_rtos";
 
-behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int thID, OS_API api_port)
+behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int thID, OS_API api_port) 
 {
+
+  void os_register(int threadID)
+  {
+    api_port.os_register(threadID);
+  }
 
     void main(void) {
     
@@ -41,8 +47,10 @@ behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int 
 };    
 
 
-behavior EdgeDrawThread_PartB(uchar image_buffer[7220], uchar mid[7220], in int thID, OS_API api_port)
+behavior EdgeDrawThread_PartB(uchar image_buffer[7220], uchar mid[7220], in int thID, OS_API api_port) 
 {
+
+ 
 
     void main(void) {
     
@@ -147,10 +155,11 @@ behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i
     
 };    
 
-behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image, OS_API api_port)
+behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image)
 {
 
-    EdgeDraw edge_draw(in_image, in_mid,  out_image, api_port);
+    RTOS draw_rtos;
+    EdgeDraw edge_draw(in_image, in_mid,  out_image, draw_rtos);
     
     void main(void) {
         edge_draw.main();
@@ -158,4 +167,23 @@ behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uch
     
 };
 
+
+
+behavior Draw_wrapper(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_sender out_image, in int thID, OS_API_TOP api_port_top)
+{
+
+  void os_register(int threadID)
+  {
+    api_port_top.os_register(threadID);
+  }   
+
+    Draw draw(in_image, in_mid,  out_image);
+    
+    void main(void) {
+	api_port_top.acquire_running_key(thID);
+        draw;
+	api_port_top.os_terminate(thID);
+    }
+    
+};
 

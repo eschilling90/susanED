@@ -4,9 +4,11 @@ import "c_uchar7220_queue";
 import "c_int7220_queue";
 import "rtos";
 
+
+
 behavior SusanEdgesThread_PartA(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], uchar bp[516],  in int thID, OS_API api_port)
 {
-    
+ 
          
     void main(void) {
 
@@ -86,9 +88,10 @@ behavior SusanEdgesThread_PartA(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZ
     
 };  
 
-behavior SusanEdgesThread_PartB(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], uchar bp[516], in int thID, OS_API api_port)
+behavior SusanEdgesThread_PartB(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], uchar bp[516], in int thID, OS_API api_port) 
 {
-    
+
+
          
     void main(void) {
 
@@ -298,10 +301,12 @@ behavior SusanEdges_PartA (uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], u
     SusanEdgesThread_PartA susan_edges_a_thread_1(image_buffer, r, bp, 1, api_port);
     
     void main(void) {
+	api_port.par_start();
         par {
             susan_edges_a_thread_0;
             susan_edges_a_thread_1;
         }
+	api_port.par_end();
     }
 };
 
@@ -310,11 +315,14 @@ behavior SusanEdges_PartB(uchar image_buffer[IMAGE_SIZE],  int r[IMAGE_SIZE], uc
     SusanEdgesThread_PartB susan_edges_b_thread_0(image_buffer, r, mid, bp, 0, api_port);
     SusanEdgesThread_PartB susan_edges_b_thread_1(image_buffer, r, mid, bp, 1, api_port);
     
-    void main(void) {                 
+    void main(void) {    
+
+	api_port.par_start();             
         par {
             susan_edges_b_thread_0;
             susan_edges_b_thread_1;
         }  
+	api_port.par_end();
     }
 };
 

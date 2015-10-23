@@ -82,9 +82,12 @@ dbg_print_queue(array_queue* q)
     printf("No.%d: valid = %d, threadID = %d\n", i, q->valid[i], q->ID[i]);
 }
 
+interface OS_REG
+{
+  void os_register(int threadID);
+};
 
-
-interface OS_API
+interface OS_API_TOP
 {
   /*
    * @intro: Clear all the marks for all threads
@@ -118,7 +121,7 @@ interface OS_API
   void par_end();
 };
 
-channel RTOS implements OS_API
+channel RTOS_TOP implements OS_API_TOP
 {
   os_thread thread[3];
 

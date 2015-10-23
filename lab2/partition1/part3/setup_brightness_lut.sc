@@ -2,8 +2,12 @@
 
 import "rtos";
 
+
+
+
 behavior SetupBrightnessLutThread(uchar bp[516], in int thID, OS_API api_port)
 {
+
        
     void main(void) {
         int   k;

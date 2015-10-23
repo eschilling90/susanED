@@ -3,12 +3,12 @@
 
 import "full_rtos";
 
-interface OS_REG
-{
-  void os_register(int threadID);
-};
+//interface OS_REG
+//{
+//  void os_register(int threadID);
+//};
 
-behavior sub_behv(OS_API api_port, in int threadID) implements OS_REG
+behavior sub_behv(OS_API_TOP api_port, in int threadID) implements OS_REG
 {
   void os_register(int threadID)
   {
@@ -40,7 +40,7 @@ behavior sub_behv(OS_API api_port, in int threadID) implements OS_REG
   }
 };
 
-behavior wapper(OS_API api_port)
+behavior wapper(OS_API_TOP api_port)
 {
   sub_behv b0(api_port, 0);
   sub_behv b1(api_port, 1);
@@ -60,7 +60,7 @@ behavior wapper(OS_API api_port)
 
 behavior Main
 {
-  RTOS os;
+  RTOS_TOP os;
   wapper w(os);
   sim_time_string buf;
 

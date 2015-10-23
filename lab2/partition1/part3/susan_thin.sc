@@ -3,9 +3,12 @@
 import "c_uchar7220_queue";
 import "c_int7220_queue";
 import "rtos";
+import "full_rtos";
 
-behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID, OS_API api_port)
+behavior SusanThinThread(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], in int thID, OS_API api_port) 
 {
+
+
 
     void main (void) {
         int    l[9], centre, 
@@ -246,15 +249,17 @@ behavior SusanThin(int r[IMAGE_SIZE], uchar mid[IMAGE_SIZE], OS_API api_port)
 
 };
 
-behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_sender out_mid, OS_API api_port)
+behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_sender out_mid)
 {
+
 
     int r[IMAGE_SIZE];
     uchar mid[IMAGE_SIZE];
  
+    RTOS thin_rtos;
     SusanThin_ReadInput susan_thin_read_input(in_r, in_mid, r, mid);
     SusanThin_WriteOutput susan_thin_write_output(out_mid, mid);   
-    SusanThin susan_thin(r, mid,api_port);
+    SusanThin susan_thin(r, mid,thin_rtos);
     
     void main(void) {
 	//printf("Susan thin start\n");
@@ -267,5 +272,24 @@ behavior Thin(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_
     }
     
 };
+
+//this will be used soon
+behavior Thin_wrapper(i_int7220_receiver in_r, i_uchar7220_receiver in_mid, i_uchar7220_sender out_mid,in int thID, OS_API_TOP api_port_top)
+{
+
+  void os_register(int threadID)
+  {
+    api_port_top.os_register(threadID);
+  }   
+ 
+    Thin thin(in_r,in_mid, out_mid);
+    
+    void main(void) {
+        api_port_top.acquire_running_key(thID);    
+	thin;
+        api_port_top.os_terminate(thID);
+	}
+};
+
 
 
