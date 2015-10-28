@@ -1,0 +1,1194 @@
+$date
+	Mon Oct 26 19:21:05 2015
+$end
+$version
+	UCI SpecC VCD Writer v0.001
+$end
+$timescale
+	1ps
+$end
+
+$var real 0 ! anonymous $end
+$var event 1 " Main.design.in_image.r $end
+$var event 1 # Main.design.in_image.s $end
+$var event 1 $ Main.design.out_image.r $end
+$var event 1 % Main.design.out_image.s $end
+$var event 1 & Main.design.pe1.rtos.run_th0 $end
+$var event 1 ' Main.design.pe1.rtos.run_th1 $end
+$var event 1 ( Main.design.pe1.rtos.run_th2 $end
+$var real 1 ) Main.design.pe1.susan.draw.edge_draw.edge_draw_a.edge_draw_a_thread_0 $end
+$var real 1 * Main.design.pe1.susan.draw.edge_draw.edge_draw_a.edge_draw_a_thread_1 $end
+$var real 1 + Main.design.pe1.susan.draw.edge_draw.edge_draw_b.edge_draw_b_thread_0 $end
+$var real 1 , Main.design.pe1.susan.draw.edge_draw.edge_draw_b.edge_draw_b_thread_1 $end
+$var real 1 - Main.design.pe1.susan.draw.edge_draw.edge_draw_a $end
+$var real 1 . Main.design.pe1.susan.draw.edge_draw.edge_draw_b $end
+$var real 1 / Main.design.pe1.susan.draw.edge_draw.edge_draw_read_input $end
+$var real 1 0 Main.design.pe1.susan.draw.edge_draw.edge_draw_write_output $end
+$var real 1 1 Main.design.pe1.susan.draw.edge_draw $end
+$var real 1 2 Main.design.pe1.susan.edges.detect_edges.setup_brightness_lut.setup_brightness_thread_0 $end
+$var real 1 3 Main.design.pe1.susan.edges.detect_edges.setup_brightness_lut.setup_brightness_thread_1 $end
+$var real 1 4 Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_a.susan_edges_a_thread_0 $end
+$var real 1 5 Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_a.susan_edges_a_thread_1 $end
+$var real 1 6 Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_b.susan_edges_b_thread_0 $end
+$var real 1 7 Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_b.susan_edges_b_thread_1 $end
+$var real 1 8 Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_a $end
+$var real 1 9 Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_b $end
+$var real 1 : Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_read_input $end
+$var real 1 ; Main.design.pe1.susan.edges.detect_edges.susan_edges.susan_edges_write_output $end
+$var real 1 < Main.design.pe1.susan.edges.detect_edges.setup_brightness_lut $end
+$var real 1 = Main.design.pe1.susan.edges.detect_edges.susan_edges $end
+$var real 1 > Main.design.pe1.susan.edges.detect_edges $end
+$var event 1 ? Main.design.pe1.susan.image_edge_draw.r $end
+$var event 1 @ Main.design.pe1.susan.image_edge_draw.s $end
+$var event 1 A Main.design.pe1.susan.mid.r $end
+$var event 1 B Main.design.pe1.susan.mid.s $end
+$var event 1 C Main.design.pe1.susan.mid_edge_draw.r $end
+$var event 1 D Main.design.pe1.susan.mid_edge_draw.s $end
+$var event 1 E Main.design.pe1.susan.r.r $end
+$var event 1 F Main.design.pe1.susan.r.s $end
+$var real 1 G Main.design.pe1.susan.thin.inst.susan_thin.susan_thin_thread_0 $end
+$var real 1 H Main.design.pe1.susan.thin.inst.susan_thin.susan_thin_thread_1 $end
+$var real 1 I Main.design.pe1.susan.thin.inst.susan_thin $end
+$var real 1 J Main.design.pe1.susan.thin.inst.susan_thin_read_input $end
+$var real 1 K Main.design.pe1.susan.thin.inst.susan_thin_write_output $end
+$var real 1 L Main.design.pe1.susan.thin.inst $end
+$var real 1 M Main.design.pe1.susan.draw $end
+$var real 1 N Main.design.pe1.susan.edges $end
+$var real 1 O Main.design.pe1.susan.image_edge_draw $end
+$var real 1 P Main.design.pe1.susan.mid $end
+$var real 1 Q Main.design.pe1.susan.mid_edge_draw $end
+$var real 1 R Main.design.pe1.susan.r $end
+$var real 1 S Main.design.pe1.susan.thin $end
+$var real 1 T Main.design.pe1.rtos $end
+$var real 1 U Main.design.pe1.susan $end
+$var real 1 V Main.design.in_image $end
+$var real 1 W Main.design.out_image $end
+$var real 1 X Main.design.pe1 $end
+$var real 1 Y Main.design.read_image $end
+$var real 1 Z Main.design.write_image $end
+$var event 1 [ Main.out_image.ack $end
+$var event 1 \ Main.out_image.req $end
+$var event 1 ] Main.start.ack $end
+$var event 1 ^ Main.start.req $end
+$var event 1 _ Main.start_time.r $end
+$var event 1 ` Main.start_time.s $end
+$var real 1 a Main.design $end
+$var real 1 b Main.monitor $end
+$var real 1 c Main.out_image $end
+$var real 1 d Main.start $end
+$var real 1 e Main.start_time $end
+$var real 1 f Main.stimulus $end
+$var real 1 g Main $end
+$var real 1 h _gl_string0 $end
+$var real 1 i _gl_string1 $end
+$var real 1 j _gl_string2 $end
+$var real 1 k _gl_string3 $end
+$var real 1 l _gl_string4 $end
+$enddefinitions $end
+
+#0
+$dumpvars
+0"
+0#
+0$
+0%
+0&
+0'
+0(
+0?
+0@
+0A
+0B
+0C
+0D
+0E
+0F
+0[
+0\
+0]
+0^
+0_
+0`
+$end
+srunning g
+sparent g
+sparent g
+sparent g
+srunning f
+swaiting f
+srunning a
+sparent a
+sparent a
+sparent a
+srunning b
+swaiting b
+srunning Y
+swaiting Y
+srunning X
+srunning U
+sparent U
+sparent U
+sparent U
+srunning Z
+swaiting Z
+srunning N
+srunning >
+srunning <
+srunning 2
+ssleeping 2
+srunning S
+srunning L
+swaiting L
+srunning M
+srunning 1
+swaiting 1
+#0
+0]
+srunning f
+srunning Y
+ssleeping f
+swaiting Y
+#0
+0_
+srunning b
+swaiting b
+#1000
+srunning f
+swaiting f
+#1000
+0^
+srunning Y
+swaiting Y
+#1000
+0]
+srunning f
+srunning Y
+ssleeping f
+swaiting Y
+#2000
+srunning f
+swaiting f
+#2700
+srunning 2
+swaiting 2
+#2700
+0'
+srunning L
+srunning J
+swaiting J
+#2700
+0(
+srunning 1
+srunning /
+swaiting /
+#2700
+0&
+srunning 2
+sinactive 2
+srunning 3
+ssleeping 3
+#5400
+srunning 3
+swaiting 3
+#5400
+0&
+srunning 3
+sinactive 3
+sinactive <
+srunning =
+srunning :
+sinactive :
+srunning 8
+srunning 4
+ssleeping 4
+#5400
+0#
+srunning Y
+swaiting Y
+#5400
+0]
+srunning f
+srunning Y
+ssleeping f
+swaiting Y
+#6400
+srunning f
+swaiting f
+#19005400
+srunning 4
+swaiting 4
+#19005400
+0&
+srunning 4
+sinactive 4
+srunning 5
+ssleeping 5
+#38005400
+srunning 5
+swaiting 5
+#38005400
+0&
+srunning 5
+sinactive 5
+sinactive 8
+srunning 9
+srunning 6
+ssleeping 6
+#58005400
+srunning 6
+swaiting 6
+#58005400
+0&
+srunning 6
+sinactive 6
+srunning 7
+ssleeping 7
+#78005400
+srunning 7
+swaiting 7
+#78005400
+0&
+srunning 7
+sinactive 7
+sinactive 9
+srunning ;
+sinactive ;
+sinactive =
+ssleeping >
+#78005400
+0?
+0E
+srunning J
+srunning /
+swaiting J
+swaiting /
+#78005401
+srunning >
+sinactive >
+srunning >
+swaiting >
+#78005401
+0'
+srunning J
+sinactive J
+srunning I
+srunning G
+ssleeping G
+#84405401
+srunning G
+swaiting G
+#84405401
+0(
+srunning /
+swaiting /
+#84405401
+0&
+srunning >
+srunning <
+srunning 2
+ssleeping 2
+#84408101
+srunning 2
+swaiting 2
+#84408101
+0'
+srunning G
+sinactive G
+srunning H
+ssleeping H
+#90808101
+srunning H
+swaiting H
+#90808101
+0&
+srunning 2
+sinactive 2
+srunning 3
+ssleeping 3
+#90810801
+srunning 3
+swaiting 3
+#90810801
+0'
+srunning H
+sinactive H
+sinactive I
+srunning K
+sinactive K
+ssleeping L
+#90810801
+0C
+srunning /
+swaiting /
+#90810802
+srunning L
+sinactive L
+srunning L
+swaiting L
+#90810802
+0&
+srunning 3
+sinactive 3
+sinactive <
+srunning =
+srunning :
+sinactive :
+srunning 8
+srunning 4
+ssleeping 4
+#90810802
+0#
+srunning Y
+swaiting Y
+#90810802
+0]
+srunning f
+srunning Y
+ssleeping f
+swaiting Y
+#90811802
+srunning f
+swaiting f
+#109810802
+srunning 4
+swaiting 4
+#109810802
+0(
+srunning /
+sinactive /
+srunning -
+srunning )
+ssleeping )
+#121810802
+srunning )
+swaiting )
+#121810802
+0'
+srunning L
+srunning J
+swaiting J
+#121810802
+0&
+srunning 4
+sinactive 4
+srunning 5
+ssleeping 5
+#140810802
+srunning 5
+swaiting 5
+#140810802
+0(
+srunning )
+sinactive )
+srunning *
+ssleeping *
+#152810802
+srunning *
+swaiting *
+#152810802
+0&
+srunning 5
+sinactive 5
+sinactive 8
+srunning 9
+srunning 6
+ssleeping 6
+#172810802
+srunning 6
+swaiting 6
+#172810802
+0(
+srunning *
+sinactive *
+sinactive -
+srunning .
+srunning +
+ssleeping +
+#184810802
+srunning +
+swaiting +
+#184810802
+0&
+srunning 6
+sinactive 6
+srunning 7
+ssleeping 7
+#204810802
+srunning 7
+swaiting 7
+#204810802
+0(
+srunning +
+sinactive +
+srunning ,
+ssleeping ,
+#216810802
+srunning ,
+swaiting ,
+#216810802
+0&
+srunning 7
+sinactive 7
+sinactive 9
+srunning ;
+sinactive ;
+sinactive =
+ssleeping >
+#216810802
+0E
+srunning J
+swaiting J
+#216810803
+srunning >
+sinactive >
+srunning >
+swaiting >
+#216810803
+0(
+srunning ,
+sinactive ,
+sinactive .
+srunning 0
+sinactive 0
+ssleeping 1
+#216810803
+0$
+srunning Z
+swaiting Z
+#216810803
+0\
+srunning b
+swaiting b
+#216810803
+0[
+srunning Z
+srunning b
+swaiting Z
+swaiting b
+#216810804
+srunning 1
+sinactive 1
+srunning 1
+swaiting 1
+#216810804
+0'
+srunning J
+sinactive J
+srunning I
+srunning G
+ssleeping G
+#223210804
+srunning G
+swaiting G
+#223210804
+0&
+srunning >
+srunning <
+srunning 2
+ssleeping 2
+#223213504
+srunning 2
+swaiting 2
+#223213504
+0(
+srunning 1
+srunning /
+swaiting /
+#223213504
+0'
+srunning G
+sinactive G
+srunning H
+ssleeping H
+#229613504
+srunning H
+swaiting H
+#229613504
+0&
+srunning 2
+sinactive 2
+srunning 3
+ssleeping 3
+#229616204
+srunning 3
+swaiting 3
+#229616204
+0'
+srunning H
+sinactive H
+sinactive I
+srunning K
+sinactive K
+ssleeping L
+#229616204
+0C
+srunning /
+swaiting /
+#229616205
+srunning L
+sinactive L
+srunning L
+swaiting L
+#229616205
+0&
+srunning 3
+sinactive 3
+sinactive <
+srunning =
+srunning :
+sinactive :
+srunning 8
+srunning 4
+ssleeping 4
+#229616205
+0#
+srunning Y
+swaiting Y
+#229616205
+0]
+srunning f
+srunning Y
+ssleeping f
+swaiting Y
+#229617205
+srunning f
+sinactive f
+#248616205
+srunning 4
+swaiting 4
+#248616205
+0(
+srunning /
+sinactive /
+srunning -
+srunning )
+ssleeping )
+#260616205
+srunning )
+swaiting )
+#260616205
+0'
+srunning L
+srunning J
+swaiting J
+#260616205
+0&
+srunning 4
+sinactive 4
+srunning 5
+ssleeping 5
+#279616205
+srunning 5
+swaiting 5
+#279616205
+0(
+srunning )
+sinactive )
+srunning *
+ssleeping *
+#291616205
+srunning *
+swaiting *
+#291616205
+0&
+srunning 5
+sinactive 5
+sinactive 8
+srunning 9
+srunning 6
+ssleeping 6
+#311616205
+srunning 6
+swaiting 6
+#311616205
+0(
+srunning *
+sinactive *
+sinactive -
+srunning .
+srunning +
+ssleeping +
+#323616205
+srunning +
+swaiting +
+#323616205
+0&
+srunning 6
+sinactive 6
+srunning 7
+ssleeping 7
+#343616205
+srunning 7
+swaiting 7
+#343616205
+0(
+srunning +
+sinactive +
+srunning ,
+ssleeping ,
+#355616205
+srunning ,
+swaiting ,
+#355616205
+0&
+srunning 7
+sinactive 7
+sinactive 9
+srunning ;
+sinactive ;
+sinactive =
+ssleeping >
+#355616205
+0E
+srunning J
+swaiting J
+#355616206
+srunning >
+sinactive >
+srunning >
+swaiting >
+#355616206
+0(
+srunning ,
+sinactive ,
+sinactive .
+srunning 0
+sinactive 0
+ssleeping 1
+#355616206
+0$
+srunning Z
+swaiting Z
+#355616206
+0\
+srunning b
+swaiting b
+#355616206
+0[
+srunning Z
+srunning b
+swaiting Z
+swaiting b
+#355616207
+srunning 1
+sinactive 1
+srunning 1
+swaiting 1
+#355616207
+0'
+srunning J
+sinactive J
+srunning I
+srunning G
+ssleeping G
+#362016207
+srunning G
+swaiting G
+#362016207
+0&
+srunning >
+srunning <
+srunning 2
+ssleeping 2
+#362018907
+srunning 2
+swaiting 2
+#362018907
+0(
+srunning 1
+srunning /
+swaiting /
+#362018907
+0'
+srunning G
+sinactive G
+srunning H
+ssleeping H
+#368418907
+srunning H
+swaiting H
+#368418907
+0&
+srunning 2
+sinactive 2
+srunning 3
+ssleeping 3
+#368421607
+srunning 3
+swaiting 3
+#368421607
+0'
+srunning H
+sinactive H
+sinactive I
+srunning K
+sinactive K
+ssleeping L
+#368421607
+0C
+srunning /
+swaiting /
+#368421608
+srunning L
+sinactive L
+srunning L
+swaiting L
+#368421608
+0&
+srunning 3
+sinactive 3
+sinactive <
+srunning =
+srunning :
+sinactive :
+srunning 8
+srunning 4
+ssleeping 4
+#368421608
+0#
+srunning Y
+swaiting Y
+#387421608
+srunning 4
+swaiting 4
+#387421608
+0(
+srunning /
+sinactive /
+srunning -
+srunning )
+ssleeping )
+#399421608
+srunning )
+swaiting )
+#399421608
+0'
+srunning L
+srunning J
+swaiting J
+#399421608
+0&
+srunning 4
+sinactive 4
+srunning 5
+ssleeping 5
+#418421608
+srunning 5
+swaiting 5
+#418421608
+0(
+srunning )
+sinactive )
+srunning *
+ssleeping *
+#430421608
+srunning *
+swaiting *
+#430421608
+0&
+srunning 5
+sinactive 5
+sinactive 8
+srunning 9
+srunning 6
+ssleeping 6
+#450421608
+srunning 6
+swaiting 6
+#450421608
+0(
+srunning *
+sinactive *
+sinactive -
+srunning .
+srunning +
+ssleeping +
+#462421608
+srunning +
+swaiting +
+#462421608
+0&
+srunning 6
+sinactive 6
+srunning 7
+ssleeping 7
+#482421608
+srunning 7
+swaiting 7
+#482421608
+0(
+srunning +
+sinactive +
+srunning ,
+ssleeping ,
+#494421608
+srunning ,
+swaiting ,
+#494421608
+0&
+srunning 7
+sinactive 7
+sinactive 9
+srunning ;
+sinactive ;
+sinactive =
+ssleeping >
+#494421608
+0E
+srunning J
+swaiting J
+#494421609
+srunning >
+sinactive >
+srunning >
+swaiting >
+#494421609
+0(
+srunning ,
+sinactive ,
+sinactive .
+srunning 0
+sinactive 0
+ssleeping 1
+#494421609
+0$
+srunning Z
+swaiting Z
+#494421609
+0\
+srunning b
+swaiting b
+#494421609
+0[
+srunning Z
+srunning b
+swaiting Z
+swaiting b
+#494421610
+srunning 1
+sinactive 1
+srunning 1
+swaiting 1
+#494421610
+0'
+srunning J
+sinactive J
+srunning I
+srunning G
+ssleeping G
+#500821610
+srunning G
+swaiting G
+#500821610
+0&
+srunning >
+srunning <
+srunning 2
+ssleeping 2
+#500824310
+srunning 2
+swaiting 2
+#500824310
+0(
+srunning 1
+srunning /
+swaiting /
+#500824310
+0'
+srunning G
+sinactive G
+srunning H
+ssleeping H
+#507224310
+srunning H
+swaiting H
+#507224310
+0&
+srunning 2
+sinactive 2
+srunning 3
+ssleeping 3
+#507227010
+srunning 3
+swaiting 3
+#507227010
+0'
+srunning H
+sinactive H
+sinactive I
+srunning K
+sinactive K
+ssleeping L
+#507227010
+0C
+srunning /
+swaiting /
+#507227011
+srunning L
+sinactive L
+srunning L
+swaiting L
+#507227011
+0&
+srunning 3
+sinactive 3
+sinactive <
+srunning =
+srunning :
+sinactive :
+srunning 8
+srunning 4
+ssleeping 4
+#526227011
+srunning 4
+swaiting 4
+#526227011
+0(
+srunning /
+sinactive /
+srunning -
+srunning )
+ssleeping )
+#538227011
+srunning )
+swaiting )
+#538227011
+0'
+srunning L
+srunning J
+swaiting J
+#538227011
+0&
+srunning 4
+sinactive 4
+srunning 5
+ssleeping 5
+#557227011
+srunning 5
+swaiting 5
+#557227011
+0(
+srunning )
+sinactive )
+srunning *
+ssleeping *
+#569227011
+srunning *
+swaiting *
+#569227011
+0&
+srunning 5
+sinactive 5
+sinactive 8
+srunning 9
+srunning 6
+ssleeping 6
+#589227011
+srunning 6
+swaiting 6
+#589227011
+0(
+srunning *
+sinactive *
+sinactive -
+srunning .
+srunning +
+ssleeping +
+#601227011
+srunning +
+swaiting +
+#601227011
+0&
+srunning 6
+sinactive 6
+srunning 7
+ssleeping 7
+#621227011
+srunning 7
+swaiting 7
+#621227011
+0(
+srunning +
+sinactive +
+srunning ,
+ssleeping ,
+#633227011
+srunning ,
+swaiting ,
+#633227011
+0&
+srunning 7
+sinactive 7
+sinactive 9
+srunning ;
+sinactive ;
+sinactive =
+ssleeping >
+#633227011
+0E
+srunning J
+swaiting J
+#633227012
+srunning >
+sinactive >
+srunning >
+swaiting >
+#633227012
+0(
+srunning ,
+sinactive ,
+sinactive .
+srunning 0
+sinactive 0
+ssleeping 1
+#633227012
+0$
+srunning Z
+swaiting Z
+#633227012
+0\
+srunning b
+swaiting b
+#633227012
+0[
+srunning Z
+srunning b
+swaiting Z
+swaiting b
+#633227013
+srunning 1
+sinactive 1
+srunning 1
+swaiting 1
+#633227013
+0'
+srunning J
+sinactive J
+srunning I
+srunning G
+ssleeping G
+#639627013
+srunning G
+swaiting G
+#639627013
+0&
+srunning >
+srunning <
+srunning 2
+ssleeping 2
+#639629713
+srunning 2
+swaiting 2
+#639629713
+0(
+srunning 1
+srunning /
+swaiting /
+#639629713
+0'
+srunning G
+sinactive G
+srunning H
+ssleeping H
+#646029713
+srunning H
+swaiting H
+#646029713
+0&
+srunning 2
+sinactive 2
+srunning 3
+ssleeping 3
+#646032413
+srunning 3
+swaiting 3
+#646032413
+0'
+srunning H
+sinactive H
+sinactive I
+srunning K
+sinactive K
+ssleeping L
+#646032413
+0C
+srunning /
+swaiting /
+#646032414
+srunning L
+sinactive L
+srunning L
+swaiting L
+#646032414
+0&
+srunning 3
+sinactive 3
+sinactive <
+srunning =
+srunning :
+swaiting :
+#646032414
+0(
+srunning /
+sinactive /
+srunning -
+srunning )
+ssleeping )
+#658032414
+srunning )
+swaiting )
+#658032414
+0'
+srunning L
+srunning J
+swaiting J
+#658032414
+0(
+srunning )
+sinactive )
+srunning *
+ssleeping *
+#670032414
+srunning *
+swaiting *
+#670032414
+0(
+srunning *
+sinactive *
+sinactive -
+srunning .
+srunning +
+ssleeping +
+#682032414
+srunning +
+swaiting +
+#682032414
+0(
+srunning +
+sinactive +
+srunning ,
+ssleeping ,
+#694032414
+srunning ,
+swaiting ,
+#694032414
+0(
+srunning ,
+sinactive ,
+sinactive .
+srunning 0
+sinactive 0
+ssleeping 1
+#694032414
+0$
+srunning Z
+swaiting Z
+#694032414
+0\
+srunning b
+swaiting b
+#694032414
+0[
+srunning Z
+srunning b
+swaiting Z
