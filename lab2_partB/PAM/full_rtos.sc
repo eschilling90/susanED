@@ -261,3 +261,18 @@ channel RTOS_TOP implements OS_API_TOP
     thread[threadID].running = 1;
   }
 };
+/*
+behavior os_idle(OS_API_TOP os_port)
+{
+  int next_thread;
+
+  void main(void)
+  {
+    do
+    {
+      waitfor(1);
+      next_thread = peek_head(&ready_queue);
+    }while(next_thread == -1)
+    os_port.os_timewait(0);
+  }
+};*/

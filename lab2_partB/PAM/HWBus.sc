@@ -4,10 +4,12 @@
 
 import "i_send";
 import "i_receive";
+import "full_rtos";
 
 // Simple hardware bus
 
 #define DATA_WIDTH	32u
+#define ADDR_WIDTH	1u
 
 #if DATA_WIDTH == 32u
 # define DATA_BYTES 4u
@@ -76,6 +78,7 @@ channel MasterHardwareBus(out signal unsigned bit[ADDR_WIDTH-1:0] A,
       range(t1; t2; 5000; 15000);
       range(t3; t4; 10000; 25000);
     }
+//printf("master finished one-word reading\n");
   }
 
 };
@@ -137,22 +140,44 @@ channel SlaveHardwareBus(in  signal unsigned bit[ADDR_WIDTH-1:0] A,
 
 /* -----  Physical layer, interrupt handling ----- */
 
-channel MasterHardwareSyncDetect(in signal unsigned bit[1] intr)
-  implements i_receive
+/*
+ * @intro: Add OS scheduling interface
+ */
+interface os_receive
 {
-  void receive(void)
+  void receive(int threadID, OS_API_TOP os_port);
+};
+
+interface i_sync
+{
+  void send(void);
+  void finish(void);
+};
+
+channel MasterHardwareSyncDetect(in signal unsigned bit[1] intr)
+  implements os_receive		// modified by TT
+{
+  void receive(int threadID, OS_API_TOP os_port)
   {
-    wait(rising intr);
+    if(intr == 0)
+    {
+      os_port.pre_wait(threadID);
+      wait(rising intr);
+      os_port.post_wait(threadID);
+    }
   }
 };
 
 channel SlaveHardwareSyncGenerate(out signal unsigned bit[1] intr)
-  implements i_send
+  implements i_sync
 {
   void send(void)
   {
     intr = 1;
-    waitfor(5000);
+  }
+
+  void finish(void)
+  {
     intr = 0;
   }
 };
@@ -212,6 +237,7 @@ channel MasterHardwareBusLinkAccess(IMasterHardwareBusProtocol protocol)
       *p = word[DATA_WIDTH-1:DATA_WIDTH-8];
       word = word << 8;      
     }
+//printf("master finished mac reading\n");
   }
 };
 
@@ -258,6 +284,67 @@ channel SlaveHardwareBusLinkAccess(ISlaveHardwareBusProtocol protocol)
   }
 };
 
+/*
+ * @intro: Interface for driver half channel
+ */
+interface dr_sender
+{
+  void send(int addr, const void *d, unsigned long l);
+};
+
+interface dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l);
+};
+
+interface os_dr_sender
+{
+  void send(int addr, const void *d, unsigned long l, int threadID, OS_API_TOP os_port);
+};
+
+interface os_dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l, int threadID, OS_API_TOP os_port);
+};
+
+/*
+ * @intro: Driver half channel on master side
+ */
+channel MasterHardwareDriver(IMasterHardwareBusLinkAccess mac, os_receive intr) implements os_dr_sender, os_dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l, int threadID, OS_API_TOP os_port)
+  {
+    intr.receive(threadID, os_port);
+    mac.MasterRead(addr, d, l);
+//printf("master finished entire reading\n");
+  }
+
+  void send(int addr, const void *d, unsigned long l, int threadID, OS_API_TOP os_port)
+  {
+    intr.receive(threadID, os_port);
+    mac.MasterWrite(addr, d, l);
+  }
+};
+
+/*
+ * @intro: Driver half channel on the slave side
+ */
+channel SlaveHardwareDriver(ISlaveHardwareBusLinkAccess mac, i_sync intr) implements dr_sender, dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l)
+  {
+    intr.send();
+    mac.SlaveRead(addr, d, l);
+    intr.finish();
+  }
+
+  void send(int addr, const void *d, unsigned long l)
+  {
+    intr.send();
+    mac.SlaveWrite(addr, d, l);
+    intr.finish();
+  }
+};
 
 /* -----  Bus instantiation example ----- */
 
@@ -323,7 +410,7 @@ channel HardwareBus()
   }
 
   void MasterSyncReceive() {
-    MasterSync0.receive();
+    //MasterSync0.receive();
   }
   
   void SlaveSyncSend() {
