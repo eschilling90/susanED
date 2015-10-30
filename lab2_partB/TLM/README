@@ -1,3 +1,1 @@
-10/15/2015 - AJG - Added waitfor() statements at the end of each main loop (not sure if this is correct).  Generated .vcd file for the top level
-10/16/2015 - COMPLETED
-10/25/2015 - I rewrote the part3 using only one rtos. This is neater and the result is more resonable
+10/28/2015 - TT Porject created
