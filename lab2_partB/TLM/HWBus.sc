@@ -4,10 +4,13 @@
 
 import "i_send";
 import "i_receive";
+import "full_rtos";
+import "os_handshake";
 
 // Simple hardware bus
 
 #define DATA_WIDTH	32u
+#define ADDR_WIDTH	1u
 
 #if DATA_WIDTH == 32u
 # define DATA_BYTES 4u
@@ -47,16 +50,14 @@ channel MasterHardwareBus(out signal unsigned bit[ADDR_WIDTH-1:0] A,
     do {
       t1: A = a;
           D = d;
-          waitfor(5000);
       t2: ready = 1;
           while(!ack) wait(ack);
-      t3: waitfor(10000);
-      t4: ready = 0;
+      t3: ready = 0;
           while(ack) wait(ack);
     }
     timing {
-      range(t1; t2; 5000; 15000);
-      range(t3; t4; 10000; 25000);
+      range(t1; t2; 0; 10000);
+      range(t2; t3; 0; 15000);
     }
   }
 
@@ -64,18 +65,17 @@ channel MasterHardwareBus(out signal unsigned bit[ADDR_WIDTH-1:0] A,
   {
     do {
       t1: A = a;
-          waitfor(5000);
       t2: ready = 1;
           while(!ack) wait(ack);
       t3: *d = D;
-          waitfor(15000);
       t4: ready = 0;
           while(ack) wait(ack);
     }
     timing {
-      range(t1; t2; 5000; 15000);
-      range(t3; t4; 10000; 25000);
+      range(t1; t2; 0; 10000);
+      range(t3; t4; 0; 10000);
     }
+//printf("master finished one-word reading\n");
   }
 
 };
@@ -98,16 +98,14 @@ channel SlaveHardwareBus(in  signal unsigned bit[ADDR_WIDTH-1:0] A,
           }
           else {
             D = d;
-            waitfor(12000);
           }
       t3: ack = 1;
           while(ready) wait(ready);
-      t4: waitfor(7000);
-      t5: ack = 0;
+      t4: ack = 0;
     }
     timing {
-      range(t2; t3; 10000; 20000);
-      range(t4; t5; 5000; 15000);
+      range(t2; t3; 0; 8000);
+      range(t3; t4; 0; 8000);
     }
   }
 
@@ -121,42 +119,56 @@ channel SlaveHardwareBus(in  signal unsigned bit[ADDR_WIDTH-1:0] A,
 	  }
           else {
             *d = D;
-            waitfor(12000);
           }
       t3: ack = 1;
           while(ready) wait(ready);
-      t4: waitfor(7000);
-      t5: ack = 0;
+      t4: ack = 0;
     }
     timing {
-      range(t2; t3; 10000; 20000);
-      range(t4; t5; 5000; 15000);
+      range(t2; t3; 0; 8000);
+      range(t3; t4; 0; 8000);
     }
   }
 };
 
 /* -----  Physical layer, interrupt handling ----- */
 
-channel MasterHardwareSyncDetect(in signal unsigned bit[1] intr)
-  implements i_receive
+/*
+ * @intro: Add OS scheduling interface
+ */
+interface i_sync
 {
-  void receive(void)
+  void send(void);
+  void finish(void);
+};
+
+channel MasterHardwareSyncDetect(in signal unsigned bit[1] intr)
+  implements os_receive		// modified by TT
+{
+  void receive(int threadID, OS_API_TOP os_port)
   {
-    wait(rising intr);
+    if(intr == 0)
+    {
+      os_port.pre_wait(threadID);
+      wait(rising intr);
+      os_port.post_wait(threadID);
+    }
   }
 };
 
 channel SlaveHardwareSyncGenerate(out signal unsigned bit[1] intr)
-  implements i_send
+  implements i_sync
 {
   void send(void)
   {
     intr = 1;
-    waitfor(5000);
+  }
+
+  void finish(void)
+  {
     intr = 0;
   }
 };
-
 
 /* -----  Media access layer ----- */
 
@@ -212,6 +224,7 @@ channel MasterHardwareBusLinkAccess(IMasterHardwareBusProtocol protocol)
       *p = word[DATA_WIDTH-1:DATA_WIDTH-8];
       word = word << 8;      
     }
+//printf("master finished mac reading\n");
   }
 };
 
@@ -258,6 +271,102 @@ channel SlaveHardwareBusLinkAccess(ISlaveHardwareBusProtocol protocol)
   }
 };
 
+/*
+ * @intro: Interface for driver half channel
+ */
+interface dr_sender
+{
+  void send(int addr, const void *d, unsigned long l);
+};
+
+interface dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l);
+};
+
+interface os_dr_sender
+{
+  void send(int addr, const void *d, unsigned long l, int threadID, OS_API_TOP os_port);
+};
+
+interface os_dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l, int threadID, OS_API_TOP os_port);
+};
+
+/*
+ * @intro: Driver half channel on master side
+ */
+channel MasterHardwareDriver(IMasterHardwareBusLinkAccess mac, os_receive intr) implements os_dr_sender, os_dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l, int threadID, OS_API_TOP os_port)
+  {
+    intr.receive(threadID, os_port);
+    mac.MasterRead(addr, d, l);
+//printf("master finished entire reading\n");
+  }
+
+  void send(int addr, const void *d, unsigned long l, int threadID, OS_API_TOP os_port)
+  {
+    intr.receive(threadID, os_port);
+    mac.MasterWrite(addr, d, l);
+  }
+};
+
+/*
+ * @intro: Driver half channel on the slave side
+ */
+channel SlaveHardwareDriver(ISlaveHardwareBusLinkAccess mac, i_send intr) implements dr_sender, dr_receiver
+{
+  void receive(int addr, void *d, unsigned long l)
+  {
+    intr.send();
+    mac.SlaveRead(addr, d, l);
+  }
+
+  void send(int addr, const void *d, unsigned long l)
+  {
+    intr.send();
+    mac.SlaveWrite(addr, d, l);
+  }
+};
+
+/*
+ * @intro: HardwareBusProtocolTLM channel for part 3
+ */
+channel HardwareBusProtocolTLM implements IMasterHardwareBusProtocol, ISlaveHardwareBusProtocol
+{
+  // variables
+  signal unsigned bit[ADDR_WIDTH-1:0] A;
+  signal unsigned bit[DATA_WIDTH-1:0] D;
+  signal unsigned bit[1]    ready = 0;
+  signal unsigned bit[1]    ack = 0;
+
+  MasterHardwareBus Master(A, D, ready, ack);
+  SlaveHardwareBus  Slave(A, D, ready, ack);
+
+  void masterWrite(unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] d)
+  {
+    Master.masterWrite(a, d);
+    waitfor(34000);
+  }
+
+  void masterRead (unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] *d)
+  {
+    Master.masterRead(a, d);
+    waitfor(39000);
+  }
+
+  void slaveWrite(unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] d)
+  {
+    Slave.slaveWrite(a, d);
+  }
+
+  void slaveRead (unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] *d)
+  {
+    Slave.slaveRead(a, d);
+  }
+};
 
 /* -----  Bus instantiation example ----- */
 
@@ -323,7 +432,7 @@ channel HardwareBus()
   }
 
   void MasterSyncReceive() {
-    MasterSync0.receive();
+    //MasterSync0.receive();
   }
   
   void SlaveSyncSend() {

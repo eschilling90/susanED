@@ -3,6 +3,7 @@
 import "c_uchar7220_queue";
 
 import "full_rtos";
+import "HWBus";
 
 behavior EdgeDrawThread_PartA(uchar image_buffer[7220], uchar mid[7220], in int thID, OS_API_TOP os_port)
 {
@@ -69,10 +70,10 @@ behavior EdgeDraw_ReadInput(i_uchar7220_receiver in_image, i_uchar7220_receiver 
     }      
 };
 
-behavior EdgeDraw_WriteOutput(uchar image_buffer[IMAGE_SIZE],  i_uchar7220_right_sender out_image, OS_API_TOP os_port)
+behavior EdgeDraw_WriteOutput(uchar image_buffer[IMAGE_SIZE],  os_dr_sender out_image, OS_API_TOP os_port)
 {
     void main(void) {
-        out_image.send(image_buffer, 2, os_port);
+        out_image.send(OUTPUT_ADDR, image_buffer, sizeof(image_buffer), 2, os_port);
     }
 };
 
@@ -105,7 +106,7 @@ behavior EdgeDraw_PartB(uchar image_buffer[7220], uchar mid[7220], OS_API_TOP os
 };
 
 
-behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_right_sender out_image, OS_API_TOP os_port)
+behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  os_dr_sender out_image, OS_API_TOP os_port)
 {
 
     
@@ -132,7 +133,7 @@ behavior EdgeDraw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i
     
 };    
 
-behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  i_uchar7220_right_sender out_image, OS_API_TOP os_port)
+behavior Draw(i_uchar7220_receiver in_image, i_uchar7220_receiver in_mid,  os_dr_sender out_image, OS_API_TOP os_port)
 {
 
     EdgeDraw edge_draw(in_image, in_mid,  out_image, os_port);
