@@ -31,3 +31,10 @@ typedef  unsigned char uchar;
 #define BT 20
 #define DRAWING_MODE 0
 #define MAX_NO_EDGES 2650
+
+// for lab2 partB
+#define INPUT_ADDR 0
+#define OUTPUT_ADDR 1
+
+#define ADDR_WIDTH      1u
+#define DATA_WIDTH      32u

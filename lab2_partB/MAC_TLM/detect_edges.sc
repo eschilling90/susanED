@@ -7,7 +7,7 @@ import "susan_edges";
 
 import "full_rtos";
 
-behavior DetectEdges(i_uchar7220_left_receiver in_image,  i_int7220_sender out_r, i_uchar7220_sender out_mid, i_uchar7220_sender out_image, OS_API_TOP os_port)
+behavior DetectEdges(os_dr_receiver in_image,  i_int7220_sender out_r, i_uchar7220_sender out_mid, i_uchar7220_sender out_image, OS_API_TOP os_port)
 {
 
     uchar bp[516];
@@ -25,7 +25,7 @@ behavior DetectEdges(i_uchar7220_left_receiver in_image,  i_int7220_sender out_r
 
 };
 
-behavior Edges(i_uchar7220_left_receiver in_image,  i_int7220_sender out_r, i_uchar7220_sender out_mid, i_uchar7220_sender out_image, OS_API_TOP os_port)
+behavior Edges(os_dr_receiver in_image,  i_int7220_sender out_r, i_uchar7220_sender out_mid, i_uchar7220_sender out_image, OS_API_TOP os_port)
 {
 
     DetectEdges detect_edges(in_image,  out_r, out_mid, out_image, os_port);

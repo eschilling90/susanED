@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+//#define DEBUG
+
 #define THE_OTHER_THREAD(x) (1-(x))
 #define MAX_THREAD_NUM 3
 
@@ -149,7 +151,9 @@ channel RTOS_TOP implements OS_API_TOP
 
   void os_init()
   {
-//printf("init os\n");
+#ifdef DEBUG
+printf("init os\n");
+#endif
     thread[0].registered = 0;
     thread[0].running = 0;
     thread[1].registered = 0;
@@ -163,7 +167,9 @@ channel RTOS_TOP implements OS_API_TOP
   void os_register(int threadID)
   {
     thread[threadID].registered = 1;
-//printf("th%d registered!\n", threadID);
+#ifdef DEBUG
+printf("th%d registered!\n", threadID);
+#endif
     enQueue(&ready_queue, threadID);
   }
 
@@ -176,11 +182,13 @@ channel RTOS_TOP implements OS_API_TOP
     thread[threadID].running = 0;
     next_thread = peek_head(&ready_queue);    
     THREAD_NOTIFY(next_thread)
-//printf("th%d terminated", threadID);
-//if (next_thread == -1)	// no thread
-//printf("!\n");
-//else
-//printf(", switch to th%d\n", next_thread);
+#ifdef DEBUG
+printf("th%d terminated", threadID);
+if (next_thread == -1)	// no thread
+printf("!\n");
+else
+printf(", switch to th%d\n", next_thread);
+#endif
   }
 
   int is_other_running()
@@ -194,7 +202,9 @@ channel RTOS_TOP implements OS_API_TOP
 
   void acquire_running_key(int threadID)
   {
-//printf("th%d tries getting the key!\n", threadID);
+#ifdef DEBUG
+printf("th%d tries getting the key!\n", threadID);
+#endif
     if (is_other_running() || (threadID != peek_head(&ready_queue)))
     {
       THREAD_WAIT(threadID)
@@ -203,7 +213,9 @@ channel RTOS_TOP implements OS_API_TOP
     else
       deQueue(&ready_queue);
     thread[threadID].running = 1;
-//printf("th%d got the key!\n", threadID);
+#ifdef DEBUG
+printf("th%d got the key!\n", threadID);
+#endif
 //dbg_print_queue(&ready_queue);
   }
 
@@ -213,11 +225,15 @@ channel RTOS_TOP implements OS_API_TOP
 
     waitfor(time);
     thread[threadID].running = 0;
-//printf("th%d: switch context, ", threadID);
+#ifdef DEBUG
+printf("th%d: switch context, ", threadID);
+#endif
     enQueue(&ready_queue, threadID);
     //next_thread = deQueue(&ready_queue);
     next_thread = peek_head(&ready_queue);
-//printf("next thread is th%d!\n", next_thread);
+#ifdef DEBUG
+printf("next thread is th%d!\n", next_thread);
+#endif
 //dbg_print_queue(&ready_queue);
     THREAD_NOTIFY(next_thread);
     THREAD_WAIT(threadID);
@@ -246,18 +262,39 @@ channel RTOS_TOP implements OS_API_TOP
     int next_thread;
 
     thread[threadID].running = 0;
-//printf("th%d: wait for comm, switch context, ", threadID);
+#ifdef DEBUG
+printf("th%d: wait for comm, switch context, ", threadID);
+#endif
     next_thread = peek_head(&ready_queue);
-//printf("next thread is th%d!\n", next_thread);
+#ifdef DEBUG
+printf("next thread is th%d!\n", next_thread);
+#endif
     THREAD_NOTIFY(next_thread);
   }
 
   void post_wait(int threadID)
   {
     enQueue(&ready_queue, threadID);
-//printf("th%d: ready again!\n", threadID);
+#ifdef DEBUG
+printf("th%d: ready again!\n", threadID);
+#endif
     THREAD_WAIT(threadID);
     deQueue(&ready_queue);
     thread[threadID].running = 1;
   }
 };
+/*
+behavior os_idle(OS_API_TOP os_port)
+{
+  int next_thread;
+
+  void main(void)
+  {
+    do
+    {
+      waitfor(1);
+      next_thread = peek_head(&ready_queue);
+    }while(next_thread == -1)
+    os_port.os_timewait(0);
+  }
+};*/
