@@ -6,6 +6,7 @@ import "i_send";
 import "i_receive";
 import "full_rtos";
 import "os_handshake";
+import "c_double_handshake";
 
 // Simple hardware bus
 
@@ -336,35 +337,35 @@ channel SlaveHardwareDriver(ISlaveHardwareBusLinkAccess mac, i_send intr) implem
  */
 channel HardwareBusProtocolTLM implements IMasterHardwareBusProtocol, ISlaveHardwareBusProtocol
 {
-  // variables
-  signal unsigned bit[ADDR_WIDTH-1:0] A;
-  signal unsigned bit[DATA_WIDTH-1:0] D;
-  signal unsigned bit[1]    ready = 0;
-  signal unsigned bit[1]    ack = 0;
-
-  MasterHardwareBus Master(A, D, ready, ack);
-  SlaveHardwareBus  Slave(A, D, ready, ack);
+  int addr;
+  c_double_handshake bus;
 
   void masterWrite(unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] d)
   {
-    Master.masterWrite(a, d);
+    addr = a;
+    bus.send(&d, sizeof(d));
     waitfor(34000);
   }
 
   void masterRead (unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] *d)
   {
-    Master.masterRead(a, d);
+    addr = a;
+    bus.receive(d, sizeof(*d));
     waitfor(39000);
   }
 
   void slaveWrite(unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] d)
   {
-    Slave.slaveWrite(a, d);
+    while(a != addr)
+      waitfor(1000);
+    bus.send(&d, sizeof(d));
   }
 
   void slaveRead (unsigned bit[ADDR_WIDTH-1:0] a, unsigned bit[DATA_WIDTH-1:0] *d)
   {
-    Slave.slaveRead(a, d);
+    while(a != addr)
+      waitfor(1000);
+    bus.receive(d, sizeof(*d));
   }
 };
 

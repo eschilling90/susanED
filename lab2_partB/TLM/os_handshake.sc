@@ -52,7 +52,7 @@ import "os_receive";
 import "full_rtos";
 
 
-channel c_handshake implements i_send, os_receive
+channel os_handshake implements i_send, os_receive
 {
     note _SCE_STANDARD_LIB = { "c_handshake" };
   

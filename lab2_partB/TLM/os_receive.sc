@@ -27,10 +27,10 @@ import "full_rtos";
 
 interface os_receive
 {
-    note _SCE_STANDARD_LIB = { "i_receive" };
+    note _SCE_STANDARD_LIB = { "os_receive" };
   
     void receive(int threadID, OS_API_TOP os_port);
 };
 
 
-// EOF i_receive.sc
+// EOF os_receive.sc
