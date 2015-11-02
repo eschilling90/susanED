@@ -36,10 +36,10 @@ behavior Monitor(i_receiver img, i_receiver start_time_channel)
                 exit_error("Can't write image %s.\n",filename);
 
             fclose(fd);        
-            printf ("Total process time: %llu us\n", (now() - start_time)/(1 MICRO_SEC));
+            //printf ("Total process time: %llu us\n", (now() - start_time)/(1 MICRO_SEC));
 
         } 
-	printf ("Current time: %llu us\n", (now())/ (1 MICRO_SEC));    
+	//printf ("Current time: %llu us\n", (now())/ (1 MICRO_SEC));    
         exit(0);
     }
 
