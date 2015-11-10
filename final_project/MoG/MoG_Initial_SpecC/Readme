@@ -1,0 +1,4 @@
+The folder contains an early version of SpecC code as well as the source C codes.
+Please do a make to build the executable binary.
+Results are in proc folder.
+Input data-set images are in teststream folder.
