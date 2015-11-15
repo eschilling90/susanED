@@ -1,7 +1,10 @@
 # For final project
 One-layer neural network written in C. It should be able to convert into SpecC easily. It is also possible to be used for rectangle detection.
 
-Some limits:
+# NOW
+All are converted to SpecC, but cannot compile
+
+# Some limits:
 	1. Numbers(rectangles) need to be roughly the same size.
 	2. Numbers(rectangles) need to be roughly at the same position.
 	3. Probably background-noise-tolerant.

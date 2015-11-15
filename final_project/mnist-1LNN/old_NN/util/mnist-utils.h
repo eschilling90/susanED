@@ -6,6 +6,9 @@
  * @date July 2015
  */
 
+#ifndef __MNIST_UTILS_H__
+#define __MNIST_UTILS_H__
+
 #include <stdint.h>
 #include <stdio.h>
 
@@ -111,3 +114,5 @@ MNIST_Image getImage(FILE *imageFile);
  */
 
 MNIST_Label getLabel(FILE *labelFile);
+
+#endif	// __MNIST_UTILS_H__

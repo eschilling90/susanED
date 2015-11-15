@@ -43,7 +43,8 @@ void initLayer(Layer *l){
         
         for (int i=0; i<NUMBER_OF_INPUT_CELLS; i++){
             l->cell[o].input[i]=0;
-            l->cell[o].weight[i]=rand()/(double)(RAND_MAX);
+            //l->cell[o].weight[i]=rand()/(double)(RAND_MAX);
+            l->cell[o].weight[i]=0;
         }
         
         l->cell[o].output = 0;

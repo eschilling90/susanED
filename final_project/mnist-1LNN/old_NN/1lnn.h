@@ -4,7 +4,8 @@
  * @author Matt Lind
  * @date July 2015
  */
-
+#ifndef __1LNN_H__
+#define __1LNN_H__
 
 #include <stdio.h>
 
@@ -153,3 +154,4 @@ void trainCell(Cell *c, MNIST_Image *img, int target);
 
 void testCell(Cell *c, MNIST_Image *img, int target);
 
+#endif	// __1LNN_H__
