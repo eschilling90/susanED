@@ -1,14 +1,14 @@
 //#include "trainlayer.h"
 #include "mnist.sh"
 
-import "c_queue"
+import "typed_queue";
 
 /**
  * @details Trains a layer by looping through and training its cells
  * @param l A pointer to the layer that is to be training
  */
 
-behavior trainLayer(i_layer_sender layer, i_MNIST_Image_train_receiver image, i_MNIST_Label_train_receiver label)
+behavior trainLayer(i_layer_sender layer_ch, i_MNIST_Image_train_receiver image, i_MNIST_Label_train_receiver label)
 {
   void main(void)
   {
@@ -27,8 +27,8 @@ behavior trainLayer(i_layer_sender layer, i_MNIST_Image_train_receiver image, i_
 
     Vector targetOutput;
 
-    image.receive(img);
-    label.receive(lbl);
+    image.receive(&img);
+    label.receive(&lbl);
 
     // Loop through all images in the file
     for (imgCount=0; imgCount<MNIST_MAX_TRAINING_IMAGES; imgCount++){
@@ -66,6 +66,6 @@ behavior trainLayer(i_layer_sender layer, i_MNIST_Image_train_receiver image, i_
         // if (maxInd!=lbl[imgCount]) errCount++;
         
     }
-    layer.send(l);
+    layer_ch.send(l);
   }
 };
