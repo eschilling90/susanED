@@ -1,9 +1,9 @@
 SCC = scc
 RM = rm -f
-SCFILES = typed_queue.sc trainlayer.sc testlayer.sc stimulus.sc monitor.sc mnist.sc neural_network.sc
-SIRFILES = typed_queue.sir trainlayer.sir testlayer.sir stimulus.sir monitor.sir mnist.sir neural_network.sir
+SCFILES = typed_queue.sc network.sc loader.sc stimulus.sc monitor.sc mnist.sc ANN.sc
+SIRFILES = typed_queue.sir network.sir loader.sir stimulus.sir monitor.sir mnist.sir ANN.sir
 SCCOPTS =       -vv -ww -g $(DEFINES)
-EXEFILE =       neural_network
+EXEFILE =       ANN
 
 #--- rules
 
@@ -16,7 +16,7 @@ EXEFILE =       neural_network
 
 all: $(EXEFILE)
 
-$(EXEFILE): $(SIRS) 
+$(EXEFILE): $(SIRFILES) $(SCFILES) 
 	$(SCC) $(EXEFILE) -sc2out $(SCCOPTS)
 
 clean:

@@ -8,28 +8,29 @@
 #include <time.h>
 #include <stdint.h>
 
-// #include "mnist-utils.h"
-// #include "mnist-stats.h"
-#include "NN_params.h"
-
 #define MNIST_TRAINING_SET_IMAGE_FILE_NAME "data/train-images-idx3-ubyte"
 #define MNIST_TRAINING_SET_LABEL_FILE_NAME "data/train-labels-idx1-ubyte"
 #define MNIST_TESTING_SET_IMAGE_FILE_NAME "data/t10k-images-idx3-ubyte"
 #define MNIST_TESTING_SET_LABEL_FILE_NAME "data/t10k-labels-idx1-ubyte"
 
-#define MNIST_MAX_TRAINING_IMAGES 60000
-#define MNIST_MAX_TESTING_IMAGES 10000
+#define MNIST_MAX_TESTING_IMAGES 1000
 #define MNIST_IMG_WIDTH 28
 #define MNIST_IMG_HEIGHT 28
 #define MNIST_IMG_SIZE 784
 
-#define QUEUE_SIZE 5ul
+#define NUMBER_OF_INPUT_CELLS 784   ///< use 28*28 input cells (= number of pixels per MNIST image)
+#define NUMBER_OF_OUTPUT_CELLS 10   ///< use 10 output cells to model 10 digits (0-9)
 
-typedef struct MNIST_ImageFileHeader MNIST_ImageFileHeader;
-typedef struct MNIST_LabelFileHeader MNIST_LabelFileHeader;
+#define LEARNING_RATE 0.05          ///< Incremental increase for changing connection weights
+
+#define QUEUE_SIZE 20ul
 
 typedef struct MNIST_Image MNIST_Image;
 typedef uint8_t MNIST_Label;
+
+typedef struct Cell Cell;
+typedef struct Layer Layer;
+typedef struct Vector Vector;
 
 /**
  * @brief Data block defining a MNIST image
@@ -40,48 +41,30 @@ struct MNIST_Image{
 };
 
 /**
- * @brief Data block defining a MNIST image file header
- * @attention The fields in this structure are not used.
- * What matters is their byte size to move the file pointer
- * to the first image.
- * @see http://yann.lecun.com/exdb/mnist/ for details
+ * @brief Core unit of the neural network (neuron and synapses)
  */
-struct MNIST_ImageFileHeader{
-    uint32_t magicNumber;
-    uint32_t maxImages;
-    uint32_t imgWidth;
-    uint32_t imgHeight;
+
+struct Cell{
+    double input [NUMBER_OF_INPUT_CELLS];
+    double weight[NUMBER_OF_INPUT_CELLS];
+    double output;
+    double bias;
 };
 
 /**
- * @brief Data block defining a MNIST label file header
- * @attention The fields in this structure are not used.
- * What matters is their byte size to move the file pointer
- * to the first label.
- * @see http://yann.lecun.com/exdb/mnist/ for details
+ * @brief The single (output) layer of this network (a layer is number cells)
  */
-struct MNIST_LabelFileHeader{
-    uint32_t magicNumber;
-    uint32_t maxImages;
+
+struct Layer{
+    Cell cell[NUMBER_OF_OUTPUT_CELLS];
 };
 
 /**
- * @details Reverse byte order in 32bit numbers
- * MNIST files contain all numbers in reversed byte order,
- * and hence must be reversed before using
+ * @brief Data structure containing defined number of integer values (the output vector contains values for 0-9)
  */
-/*
-uint32_t flipBytes(uint32_t n){
 
-    uint32_t b0,b1,b2,b3;
-
-    b0 = (n & 0x000000ff) <<  24u;
-    b1 = (n & 0x0000ff00) <<   8u;
-    b2 = (n & 0x00ff0000) >>   8u;
-    b3 = (n & 0xff000000) >>  24u;
-
-    return (b0 | b1 | b2 | b3);
-
-}*/
+struct Vector{
+    int val[NUMBER_OF_OUTPUT_CELLS];
+};
 
 #endif	// __MNIST_SH__
