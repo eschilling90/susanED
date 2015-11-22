@@ -2,11 +2,18 @@
 import "c_uchar7220_queue";
 import "setup_brightness_lut";
 
-behavior Median(uchar in0[9810],int i,int j,int x_size, uchar out0)
+behavior SusanSmoothing(uchar in0[IMAGE_SIZE], uchar bp[516], uchar out0[IMAGE_SIZE])
+{
+
+float temp;
+int   n_max, increment, mask_size,i,j,k,l,x,y,area,brightness,tmp,centre,x_size,y_size;
+uchar dp[225], dpt[225], cp, in1[9810], med;
+float total, dt;
+
+uchar median(uchar in0[9810],int i,int j,int x_size)
 {
 int p[8],k,l,tmp;
 
- void main (void) {
   p[0]=in0[(i-1)*x_size+j-1];
   p[1]=in0[(i-1)*x_size+j  ];
   p[2]=in0[(i-1)*x_size+j+1];
@@ -23,43 +30,41 @@ int p[8],k,l,tmp;
         tmp=p[l]; p[l]=p[l+1]; p[l+1]=tmp;
       }
 
-  out0 = ( (p[3]+p[4]) / 2 );
+  return ( (p[3]+p[4]) / 2 );
 }
-};
 
-behavior Enlarge(uchar in0[IMAGE_SIZE],uchar tmp_image[9810])
+void enlarge(uchar in0[IMAGE_SIZE],uchar tmp_image[9810])
 {
-int border;
-int x_size,y_size;
-int   i, j;
+int border1;
+int x_size1,y_size1;
+int   i1, j1;
 
-void main(void) {
-border = 7;
-x_size = X_SIZE;
-y_size = Y_SIZE;
+border1 = 7;
+x_size1 = X_SIZE;
+y_size1 = Y_SIZE;
 
-  for(i=0; i<IMAGE_SIZE; i++) {  /* copy *in into tmp_image */
+  for(i1=0; i1<IMAGE_SIZE; i1++) {  /* copy *in into tmp_image */
     //memcpy(tmp_image+(i+border)*(*x_size+2*border)+border, *in0+i* *x_size, *x_size);
-    for (j=0; j<x_size; j++) {
-      tmp_image[(i+border)*(x_size+2*border)+border+j] = in0[i*x_size+j];
+    for (j1=0; j1<x_size1; j1++) {
+      tmp_image[(i1+border1)*(x_size1+2*border1)+border1+j1] = in0[i1*x_size1+j1];
     }
   }
 
-  for(i=0; i<border; i++) /* copy top and bottom rows; invert as many as necessary */
+  for(i1=0; i1<border1; i1++) /* copy top and bottom rows; invert as many as necessary */
   {
     //memcpy(tmp_image+(border-1-i)*(*x_size+2*border)+border,*in0+i* *x_size,*x_size);
     //memcpy(tmp_image+(*y_size+border+i)*(*x_size+2*border)+border,*in0+(*y_size-i-1)* *x_size,*x_size);
-    for (j=0; j<x_size; j++) {
-      tmp_image[(border-1-i)*(x_size+2*border)+border+j] = in0[i*x_size+j];
-      tmp_image[(y_size+border+i)*(x_size+2*border)+border+j] = in0[(y_size-i-1)*x_size+j];
+    for (j1=0; j1<x_size1; j1++) {
+      tmp_image[(border1-1-i1)*(x_size1+2*border1)+border1+j1] = in0[i1*x_size1+j1];
+      tmp_image[(y_size1+border1+i1)*(x_size1+2*border1)+border1+j1] = in0[(y_size1-i1-1)*x_size1+j1];
     }
   }
 
-  for(i=0; i<border; i++) {/* copy left and right columns */
-    for(j=0; j<y_size+2*border; j++)
+  for(i1=0; i1<border1; i1++) {/* copy left and right columns */
+    for(j1=0; j1<y_size1+2*border1; j1++)
     {
-      tmp_image[j*(x_size+2*border)+border-1-i]=tmp_image[j*(x_size+2*border)+border+i];
-      tmp_image[j*(x_size+2*border)+ x_size+border+i]=tmp_image[j*(x_size+2*border)+ x_size+border-1-i];
+      tmp_image[j1*(x_size1+2*border1)+border1-1-i1]=tmp_image[j1*(x_size1+2*border1)+border1+i1];
+      tmp_image[j1*(x_size1+2*border1)+ x_size1+border1+i1]=tmp_image[j1*(x_size1+2*border1)+ x_size1+border1-1-i1];
     }
   }
 
@@ -67,18 +72,6 @@ y_size = Y_SIZE;
   //*y_size+=2*border;
   //*in0=tmp_image;      /* repoint in */
 }
-};
-
-behavior SusanSmoothing(uchar in0[IMAGE_SIZE], uchar bp[512], uchar out0[IMAGE_SIZE])
-{
-
-float temp;
-int   n_max, increment, mask_size,i,j,k,l,x,y,area,brightness,tmp,centre,x_size,y_size;
-uchar dp[225], dpt[225], cp, in1[9810], med;
-float total, dt;
-
-Median median(in1,i,j,x_size, med);
-Enlarge enlarge(in0, in1);
 
 void main(void) {
 dt = 4.0;
@@ -92,8 +85,7 @@ dt = 4.0;
 
   total=0.1; /* test for total's type */
 
-  //enlarge(in0,in1);
-  enlarge.main();
+  enlarge(in0,in1);
 
   x_size += 14;
   y_size += 14;
@@ -139,8 +131,7 @@ dt = 4.0;
       }
       tmp = area-10000;
       if (tmp==0) {
-	median.main();
-        out0[l]=med;
+        out0[l]=median(in1,i,j,x_size);
       } else {
         out0[l]=((total-(centre*10000))/tmp);
       }
@@ -150,6 +141,21 @@ dt = 4.0;
 }
 };
 
+behavior SusanSmooth_ReadInput(i_uchar7220_receiver in_in0, uchar in0[IMAGE_SIZE])
+{
+
+    void main(void) {
+        in_in0.receive(&in0);
+    }
+};
+
+behavior SusanSmooth_WriteOutput(i_uchar7220_sender out_in0, uchar in0[IMAGE_SIZE])
+{
+    void main(void) {
+        out_in0.send(in0);      
+    }
+};
+
 behavior Smoothing(i_uchar7220_receiver in_image, uchar bp[516], i_uchar7220_sender out_image)
 {
     uchar image_buffer[IMAGE_SIZE];
@@ -157,7 +163,7 @@ behavior Smoothing(i_uchar7220_receiver in_image, uchar bp[516], i_uchar7220_sen
 
     SusanSmooth_ReadInput susan_smooth_read_input(in_image, image_buffer); 
     SusanSmooth_WriteOutput susan_smooth_write_output(out_image, out_image_buffer);
-    SusanSmooth susan_smoothing(image_buffer, bp, out_image_buffer);
+    SusanSmoothing susan_smoothing(image_buffer, bp, out_image_buffer);
                  
     void main(void) {
         
@@ -178,26 +184,10 @@ behavior SusanSmooth(i_uchar7220_receiver in0,i_uchar7220_sender in0_out)
 	Smoothing smoothing(in0,bp,in0_out);
 	
 	void main(void) {
-	   setup_brigntess_lut.main();
+	   setup_brightness_lut.main();
 	   smoothing.main(); //needs to be converted
 	}
 
-};
-
-
-behavior SusanSmooth_ReadInput(i_uchar7220_receiver in_in0, uchar in0[IMAGE_SIZE])
-{
-
-    void main(void) {
-        in_in0.receive(&in0);
-    }
-};
-
-behavior SusanSmooth_WriteOutput(i_uchar7220_sender out_in0, uchar in0[IMAGE_SIZE])
-{
-    void main(void) {
-        out_in0.send(in0);      
-    }
 };
 
 

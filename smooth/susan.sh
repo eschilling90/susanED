@@ -20,9 +20,9 @@ typedef float      TOTAL_TYPE; /* for my PowerPC accelerator only */
 #define  FTOI(a) ( (a) < 0 ? ((int)(a-0.5)) : ((int)(a+0.5)) )
 typedef  unsigned char uchar;
 
-#define X_SIZE 307
-#define Y_SIZE 164
-#define IMAGE_SIZE 50348 /*(307*164)*/
+#define X_SIZE 76
+#define Y_SIZE 95
+#define IMAGE_SIZE 7220 /*(307*164)*/
 
 #define NR_IMGS       5
 #define PROCESSORS 2
