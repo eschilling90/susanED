@@ -7,6 +7,7 @@ behavior SusanSmoothing(uchar in0[IMAGE_SIZE], uchar bp[516], uchar out0[IMAGE_S
 
 float temp;
 int   n_max, increment, mask_size,i,j,k,l,x,y,area,brightness,tmp,centre,x_size,y_size;
+int k_for_dpt;	// added by TT
 uchar dp[225], dpt[225], cp, in1[9810], med;
 float total, dt;
 
@@ -43,7 +44,7 @@ border1 = 7;
 x_size1 = X_SIZE;
 y_size1 = Y_SIZE;
 
-  for(i1=0; i1<IMAGE_SIZE; i1++) {  /* copy *in into tmp_image */
+  for(i1=0; i1<Y_SIZE; i1++) {  /* copy *in into tmp_image */
     //memcpy(tmp_image+(i+border)*(*x_size+2*border)+border, *in0+i* *x_size, *x_size);
     for (j1=0; j1<x_size1; j1++) {
       tmp_image[(i1+border1)*(x_size1+2*border1)+border1+j1] = in0[i1*x_size1+j1];
@@ -119,15 +120,19 @@ dt = 4.0;
       centre = in1[i*x_size+j];
       cp = bp[centre];
       k=0;
+      k_for_dpt=0;
       for(y=-mask_size; y<=mask_size; y++) {
         for(x=-mask_size; x<=mask_size; x++) {
-          brightness = in1[((i-mask_size)*x_size) + j - mask_size + k * increment];
-          tmp = dpt[k] * (cp-brightness);
+          // brightness = in1[((i-mask_size)*x_size) + j - mask_size + k * increment];	// commented by TT
+          brightness = in1[((i-mask_size)*x_size) + j - mask_size + k];
+          tmp = dpt[k_for_dpt] * (cp-brightness);
           area += tmp;
           total += tmp * brightness;
           k++;
+          k_for_dpt++;
         }
         //ip += increment;
+	k += increment;
       }
       tmp = area-10000;
       if (tmp==0) {

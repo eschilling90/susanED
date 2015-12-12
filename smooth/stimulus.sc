@@ -87,11 +87,11 @@ behavior Stimulus(i_send start, inout uchar  image_buffer[IMAGE_SIZE], i_sender 
 	for(n = 0; n < NR_IMGS; n++) {
 	        printf("Starting process %d...\n", n+1);
                 start.send();
-printf("ASD");
+// printf("ASD");
 	        start_time = now();
-printf("ASD");
+// printf("ASD");
 		start_time_channel.send(&start_time, sizeof(sim_time));
-printf("ASD");
+// printf("ASD");
 	        waitfor(1000);
 	}       
     
